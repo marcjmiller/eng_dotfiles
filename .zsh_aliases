@@ -1,0 +1,11 @@
+# set dotfiles as alias to manage bare repo at $HOME/.dotfiles
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+# zsh aliases
+alias zcfg='nano $HOME/.zshrc'
+alias zali='nano $HOME/.zsh_aliases'
+alias zexp='nano $HOME/.zsh_exports'
+alias reload='source $HOME/.zshrc'
+
+# git alias for git-together
+alias git=git-together

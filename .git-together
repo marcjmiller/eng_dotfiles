@@ -1,0 +1,7 @@
+[git-together]
+	domain = dgs1sdt.com
+[git-together "authors"]
+	an = "Adam Nasi; nasiar"
+	as = "Alex Sferrella; sferrellaa"
+	db = "Destini Barcelona; barcelonad"
+	mm = "Marc Miller; millermj"
