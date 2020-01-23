@@ -5,7 +5,7 @@
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load 
-ZSH_THEME="agnoster"
+ZSH_THEME="spaceship"
 
 # Set list of themes to pick from when loading at random
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )

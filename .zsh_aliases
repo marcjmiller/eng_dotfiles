@@ -1,5 +1,8 @@
 # set dotfiles as alias to manage bare repo at $HOME/.dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+# set alias to add all updated files currently tracked in dotfiles repo
+alias dau='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add -u'
+alias da='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME add'
 
 # zsh aliases
 alias zcfg='nano $HOME/.zshrc'
