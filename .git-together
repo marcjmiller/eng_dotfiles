@@ -1,6 +1,11 @@
 [git-together]
+
+#	domain for git-together commits
 	domain = dgs1sdt.com
+
 [git-together "authors"]
+
+#	initials, names, usernames for engineers
 	an = "Adam Nasi; nasiar"
 	as = "Alex Sferrella; sferrellaa"
 	db = "Destini Barcelona; barcelonad"

@@ -1,5 +1,45 @@
 # This is Git's per-user configuration file.
+[apply]
+
+#   fix whitespace errors
+    whitespace = fix
+
+[core]
+
+#   always exclude files in ~/.gitignore
+    excludesfile = ~/.gitignore
+
+#   mark these things as whitespace errors
+    whitespace = space-before-tab,-indent-with-non-tab,trailing-space
+
+#   don't trust computer's time (safer on MacOS)
+    trustctime = false
+
+#   cache untracked to make commands faster
+    untrackedCache = true
+
+[color]
+    
+#   use colored git outputs where capable
+    ui = auto
+
+[include]
+
+#   add git-together config
+	path = ~/.git-together
+
 [user]
-# Please adapt and uncomment the following lines:
+
+#   the user whose credentials will go into all commits
 #	name = millermj
 #	email = marc.miller.4@us.af.mil
+
+[diff]
+
+#   Detect copies as well as renames
+    renames = copies
+
+[url "git@gitlab.devops.geointservices.io"]
+    
+#   allow 'gis.io:' vs 'git@gitlab.devops.geointservices.io:' for SSH to Geoint Services
+    insteadOf = "gis.io:"
