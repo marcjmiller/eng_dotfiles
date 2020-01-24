@@ -18,6 +18,8 @@ if [[ ! -d '$HOME/.oh-my-zsh' ]]; then
     wait
     printf "done! \n"
     printf "Replacing default Oh-My-ZSH template .zshrc with ours ..."
+    mv $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
+    printf "done! \n"
 
 else
     printf "Oh-My-ZSH found, skipping install. \n"
