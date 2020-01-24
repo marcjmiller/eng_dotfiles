@@ -31,8 +31,8 @@
 [user]
 
 #   the user whose credentials will go into all commits
-#	name = millermj
-#	email = marc.miller.4@us.af.mil
+	name = Marc Miller
+	email = marc.miller.4@us.af.mil
 
 [diff]
 
