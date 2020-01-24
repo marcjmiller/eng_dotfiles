@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # ===============================================================
 #              Ensure Homebrew is newest version
 # ===============================================================
 
-printf "Updating Homebrew... \n"
+printf "Updating Homebrew... " -n
 brew update
 
 # ===============================================================
@@ -15,13 +15,20 @@ printf "Upgrading packages... \n"
 brew upgrade
 
 # ===============================================================
-#                 If MacOS, install coreutils
+#            Install helpers for Homebrew by OS
 # ===============================================================
 
-if [[ $OSTYPE == "darwin"* ]]; then
-    printf "Installing updated coreutils for MacOS"
-    brew install coreutils
-fi
+
+printf "Installing helpers for Homebrew... $PLATFORM. \n"
+
+case $PLATFORM in
+    "MacOS") brew install coreutils
+    ;;
+    "Linux") sudo apt install build-essential curl file git
+    ;;
+    *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
+    ;;
+esac
 
 # ===============================================================
 #                      Install new software
