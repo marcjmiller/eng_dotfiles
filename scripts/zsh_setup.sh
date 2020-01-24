@@ -10,7 +10,7 @@ else
 fi
 
 printf "Checking for Oh-My-ZSH... \n"
-if [[ -d '$HOME/.oh-my-zsh' ]]; then
+if [[ ! -d '$HOME/.oh-my-zsh' ]]; then
     printf "Adding Oh My ZSH... \n"
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
@@ -18,7 +18,7 @@ else
 fi
 
 printf "Checking for Powerlevel10K... \n"
-if [[ -d '$HOME/.oh-my-zsh/custom/themes/powerlevel10k' ]]; then
+if [[ ! -d '$HOME/.oh-my-zsh/custom/themes/powerlevel10k' ]]; then
     printf "Adding Powerlevel10K... \n"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
 else

@@ -34,7 +34,7 @@ esac
 #                   Install ZSH and Oh My ZSH
 # ===============================================================
 
-source zsh_setup.sh
+source $HOME/scripts/zsh_setup.sh
 
 # ===============================================================
 #                      Install new software
