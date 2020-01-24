@@ -13,8 +13,8 @@ fi
 
 printf "Checking for Oh-My-ZSH... "
 if [[ ! -d '$HOME/.oh-my-zsh' ]]; then
-    printf "Adding Oh My ZSH... "
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" > $HOME/dotfiles.log &
+    printf "Not found, installing... "
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" > /dev/null &
     wait
     printf "done! \n"
     printf "Replacing default Oh-My-ZSH template .zshrc with ours ..."
@@ -22,13 +22,13 @@ if [[ ! -d '$HOME/.oh-my-zsh' ]]; then
     printf "done! \n"
 
 else
-    printf "Oh-My-ZSH found, skipping install. \n"
+    printf "Found Oh-my-zsh, skipping install. \n"
 fi
 
 printf "Checking for Powerlevel10K... "
 if [[ ! -d '$HOME/.oh-my-zsh/custom/themes/powerlevel10k' ]]; then
     printf "Adding Powerlevel10K... "
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k > $HOME/dotfiles.log &
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k > /dev/null &
     wait
     printf "done! \n"
 else

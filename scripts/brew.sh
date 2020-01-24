@@ -37,6 +37,17 @@ esac
 printf "done! \n"
 
 # ===============================================================
+#                   Install NerdFonts Hasklug
+# ===============================================================
+
+printf "Installing Nerdfonts Hasklug... "
+brew tap homebrew/cask-fonts &
+wait
+brew cask install font-hasklig-nerd-font-mono &
+wait
+printf "done! \n"
+
+# ===============================================================
 #                   Install ZSH and Oh My ZSH
 # ===============================================================
 
@@ -47,3 +58,5 @@ source $HOME/scripts/zsh_setup.sh
 # ===============================================================
 
 printf "Beginning Homebrew installs... \n"
+
+
