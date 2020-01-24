@@ -21,16 +21,16 @@
 # ===============================================================
 
 printf "Determining OS... " -n
-PLATFORM='unknown'
+PLATFORM="unknown"
 
 case $OSTYPE in
-    darwin*) PLATFORM='MacOS';
+    darwin*) PLATFORM="MacOS";
     ;;
 
-    linux*) PLATFORM='Linux';
+    linux*) PLATFORM="Linux";
     ;;
 
-    msys*) PLATFORM='Windows';
+    msys*) PLATFORM="Windows";
     ;;
 
     *) printf "Unable to determine OS, exiting \n"
