@@ -89,7 +89,11 @@ if [[ $BREW_LOC == "brew not found" ]]; then
 
         fi
     elif [[ $PLATFORM == "MacOS" ]]; then
+        printf "Installing xcode command line tools... \n"
+        xcode-select --install > /dev/null 2>&1
+
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+        
         printf "Making Homebrew multi-admin friendly... \n"
         chgrp admin -R /usr/local/*
         chmod -R g+w /usr/local/*

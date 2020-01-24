@@ -18,7 +18,7 @@ brew upgrade
 #                 If MacOS, install coreutils
 # ===============================================================
 
-if [[ $OSTYPE == "darwin*" ]]; then
+if [[ $OSTYPE == "darwin"* ]]; then
     printf "Installing updated coreutils for MacOS"
     brew install coreutils
 fi
