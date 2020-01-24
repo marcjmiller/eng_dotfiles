@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 
 # ===============================================================
+#                Export colornames to colors
+# ===============================================================
+
+# define RESET       "\033[0m"
+# define BLACK       "\033[30m"
+# define RED         "\033[31m"
+# define GREEN       "\033[32m"
+# define YELLOW      "\033[33m"
+# define BLUE        "\033[34m"
+# define MAGENTA     "\033[35m"
+# define CYAN        "\033[36m"
+# define WHITE       "\033[37m"
+# 
+# printf ( RED "Test" RESET );
+
+# ===============================================================
 #                       Determine OS 
 # ===============================================================
 
@@ -74,6 +90,9 @@ if [[ $BREW_LOC == "brew not found" ]]; then
         fi
     elif [[ $PLATFORM == "MacOS" ]]; then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+        printf "Making Homebrew multi-admin friendly... \n"
+        chgrp admin -R /usr/local/*
+        chmod -R g+w /usr/local/*
 
     else
         printf "Unable to install Homebrew, exiting... \n";
