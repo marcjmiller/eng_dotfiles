@@ -18,7 +18,7 @@ brew upgrade
 #                 If MacOS, install coreutils
 # ===============================================================
 
-if [[ $PLATFORM == "MacOS"]]; then
+if [[ $OSTYPE == "darwin*" ]]; then
     printf "Installing updated coreutils for MacOS"
     brew install coreutils
 fi
@@ -28,6 +28,3 @@ fi
 # ===============================================================
 
 printf "Beginning Homebrew installs... \n"
-
-
-
