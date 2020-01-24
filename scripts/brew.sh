@@ -4,22 +4,26 @@
 #              Ensure Homebrew is newest version
 # ===============================================================
 
-printf "Updating Homebrew... " -n
-brew update
+printf "Updating Homebrew... " 
+brew update &
+wait
+printf "done! \n"
 
 # ===============================================================
 #          Upgrade software already installed by brew
 # ===============================================================
 
-printf "Upgrading packages... \n"
-brew upgrade
+printf "Upgrading packages... "
+brew upgrade &
+wait
+printf "done! \n"
 
 # ===============================================================
 #            Install helpers for Homebrew by OS
 # ===============================================================
 
 
-printf "Installing helpers for Homebrew... $PLATFORM. \n"
+printf "Installing $PLATFORM helpers for Homebrew... "
 
 case $PLATFORM in
     "MacOS") brew install coreutils
@@ -29,6 +33,8 @@ case $PLATFORM in
     *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
     ;;
 esac
+
+printf "done! \n"
 
 # ===============================================================
 #                   Install ZSH and Oh My ZSH
@@ -41,4 +47,3 @@ source $HOME/scripts/zsh_setup.sh
 # ===============================================================
 
 printf "Beginning Homebrew installs... \n"
-

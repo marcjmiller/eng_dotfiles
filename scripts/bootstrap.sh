@@ -20,7 +20,7 @@
 #                       Determine OS 
 # ===============================================================
 
-printf "Determining OS... " -n
+printf "Determining OS... "
 PLATFORM="unknown"
 
 case $OSTYPE in
@@ -47,15 +47,21 @@ if [[ -f $HOME/.dotfiles/description ]]; then
     printf "Gitlab repo has already been pulled, skipping. \n"
 
 else
-    printf "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... \n"
-    git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles
+    printf "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
+    git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
+    wait
+    printf "done! \n"
 
-    printf "Copying from tmpdotfiles to $HOME... \n"
-    rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
+    printf "Copying from tmpdotfiles to $HOME... "
+    rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
+    wait
+    printf "done! \n"
 
-    printf "Cleaning up tmpdotfiles... \n"
-    rm -r tmpdotfiles
-    
+    printf "Cleaning up tmpdotfiles... "
+    rm -r tmpdotfiles &
+    wait
+    printf "done! \n"
+
     printf "Dotfiles downloaded... \n\n"
 fi
 
@@ -74,7 +80,7 @@ BREW_LOC=$(which brew)
 
 if [[ $BREW_LOC == "brew not found" ]]; then
     printf "Homebrew not found. \n"
-    printf "Starting Homebrew installation for $PLATFORM. \n";
+    printf "Starting Homebrew installation for $PLATFORM... \n";
 
     if [[ $PLATFORM == "Linux" ]]; then
         if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then 
@@ -89,14 +95,18 @@ if [[ $BREW_LOC == "brew not found" ]]; then
 
         fi
     elif [[ $PLATFORM == "MacOS" ]]; then
-        printf "Installing xcode command line tools... \n"
-        xcode-select --install > /dev/null 2>&1
+        printf "Installing xcode command line tools... "
+        xcode-select --install > /dev/null 2>&1 &
+        wait
+        printf "done! \n"
 
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
         
-        printf "Making Homebrew multi-admin friendly... \n"
-        chgrp admin -R /usr/local/*
-        chmod -R g+w /usr/local/*
+        printf "Making Homebrew multi-admin friendly... "
+        chgrp admin -R /usr/local/* &
+        chmod -R g+w /usr/local/* &
+        wait
+        printf "done! \n"
 
     else
         printf "Unable to install Homebrew, exiting... \n";
