@@ -14,8 +14,8 @@ printf "done! \n"
 # ===============================================================
 
 printf "Upgrading packages... "
-brew upgrade &
-wait
+#brew upgrade &
+#wait
 printf "done! \n"
 
 # ===============================================================
