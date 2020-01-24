@@ -5,3 +5,8 @@
 # ===============================================================
 
 echo "Beginning Homebrew installs..."
+
+
+brew update
+
+brew upgrade

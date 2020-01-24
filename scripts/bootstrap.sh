@@ -3,8 +3,9 @@
 # ===============================================================
 #     If they're not already there, grab dotfiles from Gitlab
 # ===============================================================
-DOTFILES=$HOME/.dotfiles/config
-if [[ test -f "$DOTFILES" ]]; then
+
+DOTFILES=$HOME/.dotfiles/description
+if [[ -f $DOTFILES ]]; then
     echo "Gitlab repo has already been pulled, skipping."
 else
     echo "Dotfiles not found, cloning repo from gitlab to $HOME/tmpdotfiles..."
@@ -48,8 +49,14 @@ BREW_LOC=$(which brew)
 if [[ $BREW_LOC == "brew not found" ]]; then
     echo "Starting Homebrew installation for $PLATFORM";
     if [[ $PLATFORM == "Linux" ]]; then
-        sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)";
-        echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' 
+        if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then 
+            echo "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile"
+            eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
+        else
+            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)";
+            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'
+        fi
     elif [[ $PLATFORM == "MacOS" ]]; then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
     else
@@ -58,5 +65,10 @@ if [[ $BREW_LOC == "brew not found" ]]; then
 else 
     echo "Homebrew found at $BREW_LOC"
 fi
+
+# ===============================================================
+#             Bootstrap complete, time for brew.sh
+# ===============================================================
+
 echo "Exiting bootstrap, beginning installs."
 source ~/scripts/brew.sh
