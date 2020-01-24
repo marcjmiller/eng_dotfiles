@@ -6,27 +6,28 @@
 
 DOTFILES=$HOME/.dotfiles/description
 if [[ -f $DOTFILES ]]; then
-    echo "Gitlab repo has already been pulled, skipping."
+    printf "Gitlab repo has already been pulled, skipping."
 else
-    echo "Dotfiles not found, cloning repo from gitlab to $HOME/tmpdotfiles..."
+    printf "Dotfiles not found, cloning repo from gitlab to $HOME/tmpdotfiles..."
     git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles
 
-    echo "Copying from tmpdotfiles to $HOME..."
+    printf "Copying from tmpdotfiles to $HOME..."
     rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/
 
-    echo "Cleaning up tmpdotfiles..."
+    printf "Cleaning up tmpdotfiles..."
     rm -r tmpdotfiles
 
-    echo "Setting dotfiles alias for managing dotfiles"
+    printf "Setting dotfiles alias for managing dotfiles"
     alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
     dotfiles config --local status.showUntrackedFiles no
-    echo "Dotfiles downloaded... \n\n"
+    printf "Dotfiles downloaded... \n\n"
 fi
 
 # ===============================================================
 #                       Determine OS 
 # ===============================================================
-echo "Determining OS..."
+
+printf "Determining OS..." -n
 PLATFORM='unknown'
 case $OSTYPE in
     darwin*) PLATFORM='MacOS';
@@ -35,40 +36,41 @@ case $OSTYPE in
     ;;
     msys*) PLATFORM='Windows';
     ;;
-    *) echo "Unable to determine OS, exiting"
+    *) printf "Unable to determine OS, exiting"
     ;;
 esac
-echo "Found $PLATFORM."
+printf "Found $PLATFORM."
 
 # ===============================================================
 #         Install Homebrew/Linuxbrew if not already present
 # ===============================================================
 
-echo "Checking for Homebrew install..."
+printf "Checking for Homebrew..." -n
 BREW_LOC=$(which brew)
 if [[ $BREW_LOC == "brew not found" ]]; then
-    echo "Starting Homebrew installation for $PLATFORM";
+    printf "Homebrew not found"
+    printf "Starting Homebrew installation for $PLATFORM";
     if [[ $PLATFORM == "Linux" ]]; then
         if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then 
-            echo "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile"
+            printf "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile"
             eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
         else
             sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)";
-            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'
+            printf 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'
         fi
     elif [[ $PLATFORM == "MacOS" ]]; then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
     else
-        echo "Unable to install Homebrew, exiting...";
+        printf "Unable to install Homebrew, exiting...";
     fi
 else 
-    echo "Homebrew found at $BREW_LOC"
+    printf "Homebrew found at $BREW_LOC"
 fi
 
 # ===============================================================
 #             Bootstrap complete, time for brew.sh
 # ===============================================================
 
-echo "Exiting bootstrap, beginning installs."
+printf "Exiting bootstrap, beginning installs."
 source ~/scripts/brew.sh
