@@ -23,23 +23,29 @@ printf "done! \n"
 # ===============================================================
 
 printf "Checking for helpers for $PLATFORM... "
-if [[ ! `brew ls --versions coreutils` ]]; then 
-    printf "Not found, installing... "
 
-    case $PLATFORM in
-        "MacOS") brew install coreutils &> /dev/null
-        ;;
-        "Linux") sudo apt install build-essential curl file git &> /dev/null
-        ;;
-        *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
-        ;;
-    esac
-    wait
-    printf "done! \n"
+case $PLATFORM in
+    "MacOS") 
+        if [[ ! `brew ls --versions coreutils` ]]; then 
+            printf "Not found, installing... ";
+            brew install coreutils &> /dev/null;
+            wait;
+            printf "done! \n"
 
-else
-    printf "Found helpers, skipping. \n"
-fi
+        else
+            printf "Found coreutils, skipping. \n"
+
+        fi
+    ;;
+    "Linux") 
+        sudo apt install build-essential curl file git &> /dev/null
+        wait
+        printf "done! \n"
+    ;;
+    *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
+    ;;
+esac
+
 
 # ===============================================================
 #                   Install NerdFonts Hasklug
@@ -56,8 +62,10 @@ printf "Checking for Nerdfonts Hasklug ... "
                 brew cask install --fontdir=/Library/Fonts font-hasklig-nerd-font-mono &> /dev/null;
                 wait;
                 printf "done! \n"
+
             else
                 printf "Found Hasklug, skipping. \n"
+
             fi
         ;;
         "Linux") 
@@ -67,12 +75,15 @@ printf "Checking for Nerdfonts Hasklug ... "
                 curl -fLo ~/.local/share/fonts/Hasklug_Nerd_Font_Complete.otf https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hasklig/Regular/complete/Hasklug%20Nerd%20Font%20Complete.otf &> /dev/null;
                 wait;
                 printf "done! \n"
+
             else
                 printf "Found Hasklug, skipping. \n"
+
             fi
         ;;
-        *) printf "DOn't know how to install for $PLATFORM, exiting."
-        exit 1
+        *) 
+            printf "Don't know how to install for $PLATFORM, exiting."
+            exit 1
         ;;
     esac   
 

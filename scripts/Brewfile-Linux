@@ -1,0 +1,37 @@
+# ===============================================================
+#                             Taps
+# ===============================================================
+
+tap 'homebrew/bundle'
+# tap 'homebrew/cask'
+# tap 'homebrew/cask-fonts'
+tap 'homebrew/core'
+tap 'pivotal/tap'
+
+# ===============================================================
+#                           Binaries
+# ===============================================================
+
+# brew 'coreutils'
+brew 'zsh'
+brew 'wget'
+brew 'pivotal/tap/git-together'
+
+# ===============================================================
+#                            Apps
+# ===============================================================
+
+# cask 'chromium'
+# cask 'firefox'
+# cask 'iterm2'
+# cask 'vscodium'
+# cask 'intellij-idea'
+# cask 'slack'
+
+# ===============================================================
+#                           Fonts
+# ===============================================================
+
+# cask 'font-hasklig-nerd-font'
+# cask 'font-hasklig-nerd-font-mono'
+# cask 'font-fira-code'
