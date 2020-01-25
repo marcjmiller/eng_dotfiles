@@ -48,21 +48,22 @@ if [[ -f $HOME/.dotfiles/description ]]; then
 
 else
     printf "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
-    git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
+    git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &> /dev/null
     wait
     printf "done! \n"
 
     printf "Copying from tmpdotfiles to $HOME... "
-    rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
+    rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &> /dev/null
     wait
     printf "done! \n"
 
     printf "Cleaning up tmpdotfiles... "
-    rm -r tmpdotfiles &
+    rm -r tmpdotfiles &> /dev/null
     wait
     printf "done! \n"
 
     printf "Dotfiles downloaded... \n\n"
+
 fi
 
 printf "Setting dotfiles alias for managing dotfiles... \n"
@@ -75,12 +76,11 @@ dotfiles config --local status.showUntrackedFiles no
 #         Install Homebrew/Linuxbrew if not already present
 # ===============================================================
 
-printf "Checking for Homebrew... " -n
+printf "Checking for Homebrew... "
 BREW_LOC=$(which brew)
 
 if [[ $BREW_LOC == "brew not found" ]]; then
-    printf "Homebrew not found. \n"
-    printf "Starting Homebrew installation for $PLATFORM... \n";
+    printf "Homebrew not found, installing for $PLATFORM... \n";
 
     if [[ $PLATFORM == "Linux" ]]; then
         if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then 
@@ -94,26 +94,30 @@ if [[ $BREW_LOC == "brew not found" ]]; then
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
 
         fi
+
     elif [[ $PLATFORM == "MacOS" ]]; then
         printf "Installing xcode command line tools... "
-        xcode-select --install > /dev/null 2>&1 &
+        xcode-select --install &> /dev/null
         wait
         printf "done! \n"
 
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
         
-        printf "Making Homebrew multi-admin friendly... "
-        chgrp admin -R /usr/local/* &
-        chmod -R g+w /usr/local/* &
+        printf "Making Homebrew multi-user friendly... "
+        chgrp admin -R /usr/local/* &> /dev/null
+        chmod -R g+w /usr/local/* &> /dev/null
         wait
         printf "done! \n"
 
     else
-        printf "Unable to install Homebrew, exiting... \n";
+        printf "Error Homebrew, exiting... \n";
+        exit 1
 
     fi
+
 else 
     printf "Homebrew found at $BREW_LOC. \n"
+    
 fi
 
 # ===============================================================
