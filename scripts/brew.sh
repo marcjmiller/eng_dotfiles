@@ -94,7 +94,10 @@ printf "Checking for Nerdfonts Hasklug ... "
 source $HOME/scripts/zsh_setup.sh
 
 # ===============================================================
-#                      Install new software
+#            Install new software with homebrew bundle
 # ===============================================================
 
 printf "Beginning Homebrew installs... \n"
+brew tap homebrew/bundle &> /dev/null
+
+brew bundle --file=$HOME/scripts/Brewfile-$PLATFORM
