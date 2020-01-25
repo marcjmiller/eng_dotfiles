@@ -5,7 +5,7 @@
 # ===============================================================
 
 printf "Updating Homebrew... " 
-brew update > /dev/null 2>&1 &
+brew update &> /dev/null
 wait
 printf "done! \n"
 
@@ -14,7 +14,7 @@ printf "done! \n"
 # ===============================================================
 
 printf "Upgrading packages... "
-#brew upgrade > /dev/null 2>&1 &
+#brew upgrade &> /dev/null
 #wait
 printf "done! \n"
 
@@ -22,38 +22,50 @@ printf "done! \n"
 #            Install helpers for Homebrew by OS
 # ===============================================================
 
+printf "Checking for helpers for $PLATFORM... "
+if [[ ! `brew ls --versions coreutils` ]]; then 
+    printf "Not found, installing... "
 
-printf "Installing $PLATFORM helpers for Homebrew... "
+    case $PLATFORM in
+        "MacOS") brew install coreutils &> /dev/null
+        ;;
+        "Linux") sudo apt install build-essential curl file git &> /dev/null
+        ;;
+        *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
+        ;;
+    esac
+    wait
+    printf "done! \n"
 
-case $PLATFORM in
-    "MacOS") brew install coreutils > /dev/null 2>&1 &
-    ;;
-    "Linux") sudo apt install build-essential curl file git > /dev/null 2>&1 &
-    ;;
-    *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
-    ;;
-esac
-
-printf "done! \n"
+else
+    printf "Found helpers, skipping. \n"
+fi
 
 # ===============================================================
 #                   Install NerdFonts Hasklug
 # ===============================================================
 
-printf "Installing Nerdfonts Hasklug... "
-brew tap homebrew/cask-fonts > /dev/null 2>&1 &
-wait
+printf "Checking for Nerfonts Hasklug ... "
+if [[ ! `brew cask ls --versions font-hasklig` ]]; then
+    printf "Not found, installing... "
+    brew tap homebrew/cask-fonts &> /dev/null
+    wait
 
-case $PLATFORM in
-    "MacOS") brew cask install --fontdir=/Library/Fonts font-hasklig-nerd-font-mono > /dev/null 2>&1 &
-    ;;
-    "Linux") brew cask install font-hasklig-nerd-font-mono > /dev/null 2>&1 &
-    ;;
-    *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
-    ;;
-esac
-wait
-printf "done! \n"
+    case $PLATFORM in
+        "MacOS") brew cask install --fontdir=/Library/Fonts font-hasklig-nerd-font-mono &> /dev/null
+        ;;
+        "Linux") brew cask install font-hasklig-nerd-font-mono &> /dev/null
+        ;;
+        *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
+        ;;
+    esac
+    
+    wait
+    printf "done! \n"
+
+else
+    printf "Found Hasklig, skipping. \n"
+fi
 
 # ===============================================================
 #                   Install ZSH and Oh My ZSH
@@ -66,5 +78,3 @@ source $HOME/scripts/zsh_setup.sh
 # ===============================================================
 
 printf "Beginning Homebrew installs... \n"
-
-
