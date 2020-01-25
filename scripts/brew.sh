@@ -5,8 +5,8 @@
 # ===============================================================
 
 printf "Updating Homebrew... " 
-brew update &> /dev/null
-wait
+#brew update &> /dev/null
+#wait
 printf "done! \n"
 
 # ===============================================================
@@ -45,27 +45,36 @@ fi
 #                   Install NerdFonts Hasklug
 # ===============================================================
 
-printf "Checking for Nerfonts Hasklug ... "
-if [[ ! `brew cask ls --versions font-hasklig` ]]; then
-    printf "Not found, installing... "
-    brew tap homebrew/cask-fonts &> /dev/null
-    wait
+printf "Checking for Nerdfonts Hasklug ... "
 
     case $PLATFORM in
-        "MacOS") brew cask install --fontdir=/Library/Fonts font-hasklig-nerd-font-mono &> /dev/null
+        "MacOS")
+            if [[ ! `brew cask ls --versions font-hasklig` ]]; then
+                printf "Not found, installing... ";
+                brew tap homebrew/cask-fonts &> /dev/null &> /dev/null; 
+                wait; 
+                brew cask install --fontdir=/Library/Fonts font-hasklig-nerd-font-mono &> /dev/null;
+                wait;
+                printf "done! \n"
+            else
+                printf "Found Hasklug, skipping. \n"
+            fi
         ;;
-        "Linux") brew cask install font-hasklig-nerd-font-mono &> /dev/null
+        "Linux") 
+            if [[ ! -f ~/.local/share/fonts/Hasklug_Nerd_Font_Complete.otf ]]; then
+                printf "Not found, installing... "
+                mkdir -p ~/.local/share/fonts; 
+                curl -fLo ~/.local/share/fonts/Hasklug_Nerd_Font_Complete.otf https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Hasklig/Regular/complete/Hasklug%20Nerd%20Font%20Complete.otf &> /dev/null;
+                wait;
+                printf "done! \n"
+            else
+                printf "Found Hasklug, skipping. \n"
+            fi
         ;;
-        *) printf "Unable to find helpers for Homebrew for $PLATFORM. \n"
+        *) printf "DOn't know how to install for $PLATFORM, exiting."
+        exit 1
         ;;
-    esac
-    
-    wait
-    printf "done! \n"
-
-else
-    printf "Found Hasklig, skipping. \n"
-fi
+    esac   
 
 # ===============================================================
 #                   Install ZSH and Oh My ZSH
