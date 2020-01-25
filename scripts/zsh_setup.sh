@@ -36,6 +36,6 @@ else
     printf "done! \n"
 fi
 
-printf "Loading new config w/ Powerlevel10K... "
+printf "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K... "
 reload
 printf "done! \n"
