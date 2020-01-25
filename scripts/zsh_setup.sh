@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 printf "Checking for ZSH... "
-ZSH_LOC=$(which zsh)
-if [[ ZSH_LOC == "zsh not found" ]]; then
+if [[ $(which zsh) == "zsh not found" ]]; then
     printf "ZSH not found, installing... "
     brew install zsh &> /dev/null
     wait
     printf "done! \n"
+
 else
-    printf "ZSH found, skipping. \n"
+    printf "Found ZSH, skipping. \n"
 fi
 
 printf "Checking for Oh-My-ZSH... "
