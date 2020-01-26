@@ -1,37 +1,42 @@
+# Other entries 
+# can be run only on (or not on) Linux with if OS.mac? or if OS.linux?
+
 # ===============================================================
 #                             Taps
 # ===============================================================
 
-tap 'homebrew/bundle'
-# tap 'homebrew/cask'
-# tap 'homebrew/cask-fonts'
 tap 'homebrew/core'
+tap 'homebrew/bundle'
 tap 'pivotal/tap'
+tap 'homebrew/cask' if OS.mac?
+tap 'homebrew/cask-fonts' if OS.mac?
 
 # ===============================================================
 #                           Binaries
 # ===============================================================
 
-# brew 'coreutils'
-brew 'zsh'
+brew 'coreutils' if OS.mac?
 brew 'wget'
+brew 'zsh'
 brew 'pivotal/tap/git-together'
+brew 'neovim'
 
 # ===============================================================
 #                            Apps
 # ===============================================================
+# cask and mas entries are automatically skipped on Linux.
 
-# cask 'chromium'
-# cask 'firefox'
-# cask 'iterm2'
-# cask 'vscodium'
-# cask 'intellij-idea'
-# cask 'slack'
+cask 'iterm2'
+cask 'chromium'
+cask 'vscodium'
+cask 'firefox'
+cask 'intellij-idea'
+cask 'slack'
 
 # ===============================================================
 #                           Fonts
 # ===============================================================
 
-# cask 'font-hasklig-nerd-font'
-# cask 'font-hasklig-nerd-font-mono'
-# cask 'font-fira-code'
+cask 'font-hasklig-nerd-font'
+cask 'font-hasklig-nerd-font-mono'
+cask 'font-fira-code'

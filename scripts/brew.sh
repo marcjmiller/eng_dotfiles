@@ -99,5 +99,4 @@ source $HOME/scripts/zsh_setup.sh
 
 printf "Beginning Homebrew installs... \n"
 brew tap homebrew/bundle &> /dev/null
-
-brew bundle --file=$HOME/scripts/Brewfile-$PLATFORM
+brew bundle --file=$HOME/scripts/Brewfile &> /dev/null
