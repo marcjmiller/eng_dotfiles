@@ -5,18 +5,19 @@
 # ===============================================================
 
 printf "Updating Homebrew... " 
-#brew update &> /dev/null
-#wait
+brew update &> /dev/null
+wait
 printf "done! \n"
 
 # ===============================================================
 #          Upgrade software already installed by brew
 # ===============================================================
 
-printf "Upgrading packages... "
-#brew upgrade &> /dev/null
-#wait
-printf "done! \n"
+# Ideally, there should be nothing installed at this point...
+# printf "Upgrading packages... "
+# brew upgrade &> /dev/null
+# wait
+# printf "done! \n"
 
 # ===============================================================
 #            Install helpers for Homebrew by OS
