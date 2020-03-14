@@ -1,5 +1,6 @@
 # set dotfiles as alias to manage bare repo at $HOME/.dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
 # set alias to add all updated files currently tracked in dotfiles repo
 alias dau='dotfiles add -u'
 alias da='dotfiles add'
@@ -17,3 +18,7 @@ alias reload='source $HOME/.zshrc'
 
 # git alias for git-together
 alias git=git-together
+
+# alias vi / vim to use neovim
+alias vi=nvim
+alias vim=nvim

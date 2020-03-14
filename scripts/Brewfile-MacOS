@@ -2,7 +2,6 @@
 #                             Taps
 # ===============================================================
 
-tap 'homebrew/bundle'
 tap 'homebrew/cask'
 tap 'homebrew/cask-fonts'
 tap 'homebrew/core'
@@ -13,7 +12,7 @@ tap 'pivotal/tap'
 # ===============================================================
 
 brew 'coreutils'
-brew 'zsh'
+brew 'nvim'
 brew 'wget'
 brew 'pivotal/tap/git-together'
 

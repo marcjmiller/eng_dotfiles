@@ -37,5 +37,5 @@ else
 fi
 
 printf "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K... "
-reload
+source ~/.zshrc
 printf "done! \n"

@@ -20,6 +20,9 @@
 #                       Determine OS 
 # ===============================================================
 
+# Set bash to exit on error
+set -e
+
 printf "Determining OS... "
 PLATFORM="unknown"
 
@@ -73,20 +76,17 @@ else
     printf "Dotfiles downloaded... \n\n"
 fi
 
-printf "Setting dotfiles alias for managing dotfiles... \n"
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
 printf "Setting local status.showUntrackedFiles no for dotfiles repo... \n"
-dotfiles config --local status.showUntrackedFiles no
+/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
 # ===============================================================
 #         Install Homebrew/Linuxbrew if not already present
 # ===============================================================
 
 printf "Checking for Homebrew... " -n
-BREW_LOC=$(which brew)
 
-if [[ $BREW_LOC == "brew not found" ]]; then
+which -s brew
+if [[ $? != 0 ]]; then
     printf "Homebrew not found. \n"
     printf "Starting Homebrew installation for $PLATFORM... \n";
 
@@ -104,13 +104,6 @@ if [[ $BREW_LOC == "brew not found" ]]; then
         fi
     elif [[ $PLATFORM == "MacOS" ]]; then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
-        
-        #  This broke other users, use with caution... for now we'll just use the standard user install
-        # printf "Making Homebrew multi-admin friendly... "
-        # chgrp admin -R /usr/local/* &
-        # chmod -R g+w /usr/local/* &
-        # wait
-        # printf "done! \n"
 
     else
         printf "Unable to install Homebrew, exiting... \n";
