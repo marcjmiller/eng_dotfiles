@@ -47,6 +47,13 @@ if [[ -f $HOME/.dotfiles/README.md ]]; then
     printf "Gitlab repo has already been pulled, skipping. \n"
 
 else
+    if [[ $PLATFORM == "MacOS" ]]; then
+        printf "Installing MacOS command-line tools... "
+        xcode-select --install &
+        wait
+        printf "done! \n"
+    fi
+    
     printf "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
     git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
     wait
@@ -95,13 +102,9 @@ if [[ $BREW_LOC == "brew not found" ]]; then
 
         fi
     elif [[ $PLATFORM == "MacOS" ]]; then
-        printf "Installing xcode command line tools... "
-        xcode-select --install > /dev/null 2>&1 &
-        wait
-        printf "done! \n"
-
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
         
+        #  This broke other users, use with caution... for now we'll just use the standard user install
         # printf "Making Homebrew multi-admin friendly... "
         # chgrp admin -R /usr/local/* &
         # chmod -R g+w /usr/local/* &
