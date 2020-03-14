@@ -15,6 +15,7 @@ brew 'coreutils'
 brew 'nvim'
 brew 'wget'
 brew 'pivotal/tap/git-together'
+brew 'zsh-completion'
 
 # ===============================================================
 #                            Apps
@@ -27,6 +28,7 @@ cask 'vscodium'
 cask 'intellij-idea'
 cask 'slack'
 cask 'hammerspoon'
+cask 'rar'
 
 # ===============================================================
 #                           Fonts
