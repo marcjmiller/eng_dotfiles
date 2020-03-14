@@ -43,7 +43,7 @@ printf "Found $PLATFORM. \n"
 #     If they're not already there, grab dotfiles from Gitlab
 # ===============================================================
 
-if [[ -f $HOME/.dotfiles/description ]]; then
+if [[ -f $HOME/.dotfiles/README.md ]]; then
     printf "Gitlab repo has already been pulled, skipping. \n"
 
 else
@@ -102,11 +102,11 @@ if [[ $BREW_LOC == "brew not found" ]]; then
 
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
         
-        printf "Making Homebrew multi-admin friendly... "
-        chgrp admin -R /usr/local/* &
-        chmod -R g+w /usr/local/* &
-        wait
-        printf "done! \n"
+        # printf "Making Homebrew multi-admin friendly... "
+        # chgrp admin -R /usr/local/* &
+        # chmod -R g+w /usr/local/* &
+        # wait
+        # printf "done! \n"
 
     else
         printf "Unable to install Homebrew, exiting... \n";
@@ -120,5 +120,5 @@ fi
 #             Bootstrap complete, time for brew.sh
 # ===============================================================
 
-printf "Exiting bootstrap, beginning brew. \n"
+printf "Exiting bootstrap, beginning brew... \n"
 source ~/scripts/brew.sh
