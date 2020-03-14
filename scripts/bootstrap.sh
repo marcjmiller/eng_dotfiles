@@ -55,7 +55,8 @@ else
     fi
     
     printf "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
-    git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
+    # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
+    git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
     wait
     printf "done! \n"
 
