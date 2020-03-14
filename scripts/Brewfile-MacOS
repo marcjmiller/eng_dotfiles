@@ -26,6 +26,7 @@ cask 'iterm2'
 cask 'vscodium'
 cask 'intellij-idea'
 cask 'slack'
+cask 'hammerspoon'
 
 # ===============================================================
 #                           Fonts

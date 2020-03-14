@@ -5,29 +5,18 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+ZSH_DISABLE_COMPFIX="true"
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# Source all the extra files
+source $HOME/.zsh_exports
+source $ZSH/oh-my-zsh.sh
+source $HOME/.zsh_aliases
 
 # Set name of the theme to load 
 ZSH_THEME=powerlevel10k/powerlevel10k
 
-# Set list of themes to pick from when loading at random
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
 # Automatically update without prompting.
 DISABLE_UPDATE_PROMPT="true"
-
-# Set how often to auto-update  (in days).
-export UPDATE_ZSH_DAYS=1
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment to disable marking untracked files under VCS as dirty.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # change the command execution time
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
@@ -42,8 +31,8 @@ plugins=(git)
 
 ZSH_DISABLE_COMPFIX="true"
 source $ZSH/oh-my-zsh.sh
-source $HOME/.zsh_aliases
 source $HOME/.zsh_exports
+source $HOME/.zsh_aliases
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
