@@ -15,6 +15,10 @@ brew 'coreutils'
 brew 'nvim'
 brew 'wget'
 brew 'pivotal/tap/git-together'
+brew 'node'
+brew 'yarn'
+brew 'yarn-completion'
+brew 'mysql'
 brew 'zsh-completion'
 
 # ===============================================================

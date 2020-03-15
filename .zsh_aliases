@@ -1,7 +1,7 @@
 # set dotfiles as alias to manage bare repo at $HOME/.dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-# set alias to add all updated files currently tracked in dotfiles repo
+# set aliases to make managing dotfiles easier 
 alias dau='dotfiles add -u'
 alias da='dotfiles add'
 alias dcm='dotfiles commit -m'
@@ -16,8 +16,9 @@ alias dst='dotfiles stash'
 # more git aliases specific to the DGS1 SDT
 alias gbda='git branch --no-color --merged | command grep -vE "^(\+|\*|\s*(master|develop|dev|acceptance)\s*$)" | command xargs -n 1 git branch -d'
 alias gcbp='git checkout -b && git push --set-upstream origin $(git_current_branch)'
+alias gca='git checkout acceptance'
 
-# zsh aliases
+# aliases to make zsh management easier
 alias zcfg='$EDITOR $HOME/.zshrc'
 alias zali='$EDITOR $HOME/.zsh_aliases'
 alias zexp='$EDITOR $HOME/.zsh_exports'

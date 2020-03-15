@@ -33,10 +33,10 @@ else
 fi
 
 # ===============================================================
-#                   Install Powerlevel10K
+#                 Install PowerLevel10K
 # ===============================================================
 info "Checking for Powerlevel10K... "
-if [[ -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
+if [[ -d $ZSH_CUSTOM/themes/powerlevel10k ]]; then
     info "Found Powerlevel10K, skipping. "
 
 else
@@ -47,7 +47,20 @@ else
 fi
 
 # ===============================================================
-#                  Reload ZSH configuration
+#                 Install ZSH-AutoSuggestions
+# ===============================================================
+info "Checking for ZSH-Autosuggestions... "
+if [[ -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
+    info "Found ZSH-Autosuggestions, skipping. "
+
+else
+    info "Not found, installing... "
+    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions &> /dev/null
+    wait
+    success "done!"
+fi
+# ===============================================================
+#                 Reload ZSH configuration
 # ===============================================================
 info "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K.  Hold on to your butts..."
 source ~/.zshrc

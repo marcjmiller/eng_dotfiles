@@ -7,11 +7,6 @@ fi
 
 ZSH_DISABLE_COMPFIX="true"
 
-# Source all the extra files
-source $HOME/.zsh_exports
-source $ZSH/oh-my-zsh.sh
-source $HOME/.zsh_aliases
-
 # Set name of the theme to load 
 ZSH_THEME=powerlevel10k/powerlevel10k
 
@@ -27,9 +22,14 @@ HIST_STAMPS="dd/mm/yyyy"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(bgnotify docker git mvn sudo)
+plugins=(alias-finder bgnotify docker extract git mvn sudo yarn z zsh-autosuggestions)
+
+ZSH_ALIAS_FINDER_AUTOMATIC=true
+
+# Source all the extra files
+source $HOME/.zsh_exports
+source $ZSH/oh-my-zsh.sh
+source $HOME/.zsh_aliases
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
