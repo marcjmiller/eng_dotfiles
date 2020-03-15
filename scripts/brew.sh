@@ -24,7 +24,7 @@ case $PLATFORM in
             success "done!"
 
         else
-            info "Found coreutils, skipping. \n"
+            info "Found coreutils, skipping. "
 
         fi
     ;;
@@ -33,7 +33,7 @@ case $PLATFORM in
         wait
         success "done!"
     ;;
-    *) info "Unable to find helpers for Homebrew for $PLATFORM. \n"
+    *) info "Unable to find helpers for Homebrew for $PLATFORM. "
     ;;
 esac
 
@@ -41,11 +41,11 @@ esac
 #                      Install new software
 # ===============================================================
 
-info "Beginning Homebrew installs... \n"
-info "Tapping homebrew/bundle... \n"
+info "Beginning Homebrew installs... "
+info "Tapping homebrew/bundle... "
 brew tap homebrew/bundle &> /dev/null;
 wait;
 success "done!"
 
-info "Beginning Homebrew Bundle using ~/scripts/Brewfile-$PLATFORM... \n"
+info "Beginning Homebrew Bundle using ~/scripts/Brewfile-$PLATFORM... "
 brew bundle --file=$HOME/scripts/Brewfile-$PLATFORM

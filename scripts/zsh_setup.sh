@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# ===============================================================
+#                       Install ZSH
+# ===============================================================
 info "Checking for ZSH... "
 if [[ $(which zsh) == "zsh not found" ]]; then
     info "ZSH not found, installing... "
@@ -8,26 +11,33 @@ if [[ $(which zsh) == "zsh not found" ]]; then
     success "done!"
 
 else
-    info "Found ZSH, skipping. \n"
+    info "Found ZSH, skipping. "
 fi
 
+# ===============================================================
+#                    Install Oh-My-Zsh
+# ===============================================================
 info "Checking for Oh-My-ZSH... "
 if [[ -d $HOME/.oh-my-zsh ]]; then
-    info "Found Oh-My-ZSH, skipping. \n"
+    info "Found Oh-My-ZSH, skipping. "
 
 else
     info "$HOME/.oh-my-zsh Not found, installing... "
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &> /dev/null
     wait
     success "done!"
-    info "Replacing default Oh-My-ZSH template .zshrc with ours... "
+
+    info "Overwriting default Oh-My-ZSH template .zshrc with ours... "
     mv $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc &> /dev/null
     success "done!"    
 fi
 
+# ===============================================================
+#                   Install Powerlevel10K
+# ===============================================================
 info "Checking for Powerlevel10K... "
 if [[ -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
-    info "Found Powerlevel10K, skipping. \n"
+    info "Found Powerlevel10K, skipping. "
 
 else
     info "Not found, installing... "
@@ -36,6 +46,9 @@ else
     success "done!"
 fi
 
-info "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K... "
+# ===============================================================
+#                  Reload ZSH configuration
+# ===============================================================
+info "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K.  Hold on to your butts..."
 source ~/.zshrc
 success "done!"

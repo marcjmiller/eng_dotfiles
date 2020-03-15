@@ -21,6 +21,7 @@ alias gcbp='git checkout -b && git push --set-upstream origin $(git_current_bran
 alias zcfg='$EDITOR $HOME/.zshrc'
 alias zali='$EDITOR $HOME/.zsh_aliases'
 alias zexp='$EDITOR $HOME/.zsh_exports'
+alias zfun='$EDITOR $HOME/.zsh_functions'
 alias reload='source $HOME/.zshrc'
 
 # git alias for git-together

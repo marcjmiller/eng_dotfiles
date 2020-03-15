@@ -1,30 +1,14 @@
 #!/usr/bin/env bash
 
-# ===============================================================
-#                Export colornames to colors
-# ===============================================================
-
-# define RESET       "\033[0m"
-# define BLACK       "\033[30m"
-# define RED         "\033[31m"
-# define GREEN       "\033[32m"
-# define YELLOW      "\033[33m"
-# define BLUE        "\033[34m"
-# define MAGENTA     "\033[35m"
-# define CYAN        "\033[36m"
-# define WHITE       "\033[37m"
-# 
-# printf ( RED "Test" RESET );
+# Set bash to exit on error
+set -e
 
 # ===============================================================
 #                       Determine OS 
 # ===============================================================
 
-# Set bash to exit on error
-set -e
-
 info () {
-  printf "\r  [ \033[00;34m..\033[0m ] $1"
+  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
 }
 
 user () {
@@ -58,19 +42,19 @@ case $OSTYPE in
     ;;
 esac
 
-info "Found $PLATFORM. \n"
+info "Found $PLATFORM. "
 
 # ===============================================================
 #     If they're not already there, grab dotfiles from Gitlab
 # ===============================================================
 
 if [[ -f $HOME/.dotfiles/README.md ]]; then
-    info "Gitlab repo has already been pulled, skipping. \n"
+    info "Gitlab repo has already been pulled, skipping. "
 
 else
     if [[ $PLATFORM == "MacOS" ]]; then
         if xcode-select --install 2>&1 | grep installed; then
-		info "xcode-select already installed... \n"
+		info "xcode-select already installed... "
 	else
 		info "Installing MacOS command-line tools... "
 	fi
@@ -93,10 +77,10 @@ else
     wait
     success "done!"
 
-    success "Dotfiles downloaded... \n"
+    success "Dotfiles downloaded... "
 fi
 
-info "Setting local status.showUntrackedFiles no for dotfiles repo... \n"
+info "Setting local status.showUntrackedFiles no for dotfiles repo... "
 /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
 success "done!"
 
@@ -108,12 +92,12 @@ info "Checking for Homebrew... " -n
 
 which -s brew
 if [[ $? != 0 ]]; then
-    info "Homebrew not found. \n"
-    info "Starting Homebrew installation for $PLATFORM... \n";
+    info "Homebrew not found. "
+    info "Starting Homebrew installation for $PLATFORM... ";
 
     if [[ $PLATFORM == "Linux" ]]; then
         if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then 
-            info "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile... \n"
+            info "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile... "
             eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
 
@@ -127,18 +111,18 @@ if [[ $? != 0 ]]; then
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
 
     else
-        fail "Unable to install Homebrew, exiting... \n";
+        fail "Unable to install Homebrew, exiting... ";
 
     fi
 else 
-    info "Homebrew found at $BREW_LOC. \n"
+    info "Homebrew found at $BREW_LOC. "
 fi
 
 # ===============================================================
 #             Install Homebrew and run our Brewfile 
 # ===============================================================
 
-info "Exiting bootstrap, beginning brew... \n"
+info "Exiting bootstrap, beginning brew... "
 source $HOME/scripts/brew.sh
 
 # ===============================================================
@@ -152,7 +136,7 @@ source $HOME/scripts/zsh_setup.sh
 # ===============================================================
 
 if [[ $PLATFORM == "MacOS" ]]; then
-	info "Setting defaults for MacOS... \n"
+	info "Setting defaults for MacOS... "
 	source $HOME/scripts/set_macos_defaults.sh
 	success "done!"
 fi
