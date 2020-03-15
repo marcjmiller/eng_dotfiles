@@ -1,11 +1,10 @@
 # This is Git's per-user configuration file.
-[apply]
 
 #   fix whitespace errors
+[apply]
     whitespace = fix
 
 [core]
-
 #   always exclude files in ~/.gitignore
     excludesfile = ~/.gitignore
 
@@ -18,28 +17,62 @@
 #   cache untracked to make commands faster
     untrackedCache = true
 
-[color]
-    
+#   set diff-so-fancy as the pager
+[pager]
+    diff = "diff-so-fancy | less --tabs=4 -RFX"
+    show = "diff-so-fancy | less --tabs=4 -RFX"
+
+#   diff-so-fancy settings
+[diff-so-fancy]
+    stripLeadingSymbols = false
+
 #   use colored git outputs where capable
+[color]
     ui = auto
 
-[include]
+#   better colors for diff-so-fancy
+[color "diff-highlight"]
+    oldNormal = "red bold"
+    oldHighlight = "red bold 52"
+    newNormal = "green bold"
+    newHighlight = "green bold 22"
+
+[color "diff"]
+    meta = "11"
+    frag = "magenta bold"
+    commit = "yellow bold"
+    old = "red bold"
+    new = "green bold"
+    whitespace = "red reverse"
+    newMoved = "cyan"
+    oldMoved = "blue"
+
+[color "branch"]
+    current = "yellow reverse"
+    local = "yellow"
+    remote = "green"
+
+[color "status"]
+    added = "yellow"
+    changed = "green"
+    untracked = "cyan"
+
 
 #   add git-together config
+[include]
 	path = ~/.git-together
 
-[user]
-
 #   the user whose credentials will go into all commits
+[user]
 	name = Marc Miller
 	email = marc.miller.4@us.af.mil
 
-[diff]
-
 #   Detect copies as well as renames
+[diff]
     renames = copies
 
-[url "git@gitlab.devops.geointservices.io"]
+
     
 #   allow 'gis.io:' vs 'git@gitlab.devops.geointservices.io:' for SSH to Geoint Services
+[url "git@gitlab.devops.geointservices.io"]
     insteadOf = "gis.io:"
