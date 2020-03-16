@@ -1,5 +1,5 @@
 # set dotfiles as alias to manage bare repo at $HOME/.dotfiles
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # set aliases to make managing dotfiles easier 
 alias dau='dotfiles add -u'
@@ -12,6 +12,7 @@ alias dl='dotfiles log'
 alias dlo='dotfiles log --oneline'
 alias dlog='dotfiles log --oneline --decorate --graph'
 alias dst='dotfiles stash'
+alias dstp='dotfiles stash pop'
 
 # more git aliases specific to the DGS1 SDT
 alias gbda='git branch --no-color --merged | command grep -vE "^(\+|\*|\s*(master|develop|dev|acceptance)\s*$)" | command xargs -n 1 git branch -d'
