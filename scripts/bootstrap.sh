@@ -61,12 +61,6 @@ if [ $PLATFORM == "Linux" ]; then
   fi
 fi
 
-info "Determininig package management binary... "
-if [ $DISTRO == "void" ]; then
-  info "Found Void Linux, installing vpm to ease package management"
-  install_pkg vpm;
-fi
-
 install_pkg() {
   for pkg in "$@"; do
     if [ $(check_pkg_installed $pkg) == 0 ]; then
@@ -92,6 +86,13 @@ install_pkg() {
 check_pkg_installed() {
   test $(command -v $1) && return 1 || return 0
 }
+
+info "Determininig package management binary... "
+if [ $DISTRO == "void" ]; then
+  info "Found Void Linux, installing vpm to ease package management"
+  install_pkg vpm;
+fi
+
 # ===============================================================
 #     If they're not already there, grab dotfiles from Gitlab
 # ===============================================================
