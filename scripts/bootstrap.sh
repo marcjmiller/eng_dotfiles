@@ -4,7 +4,7 @@
 set -e
 
 # ===============================================================
-#                       Determine DISTRO
+#                            Functions
 # ===============================================================
 
 info() {
@@ -25,7 +25,37 @@ fail() {
   exit
 }
 
-info "Determining DISTRO... "
+install_pkg() {
+  for pkg in "$@"; do
+    if [ $(check_pkg_installed $pkg) == 0 ]; then
+      case $DISTRO in
+      void)
+        sudo vpm install $pkg &>/dev/null
+        success "Installed $pkg"
+        ;;
+
+      ubuntu* | debian* | elementary*)
+        sudo apt install $pkg &>/dev/null
+        success "Installed $pkg"
+        ;;
+
+      *)
+        fail "Sorry, don't know how to install packages for $DISTRO"
+        ;;
+      esac
+    fi
+  done
+}
+
+check_pkg_installed() {
+  test $(command -v $1) && return 1 || return 0
+}
+
+# ===============================================================
+#                       Determine OS/DISTRO
+# ===============================================================
+
+info "Determining OS... "
 PLATFORM="unknown"
 
 case $OSTYPE in
@@ -60,32 +90,6 @@ if [ $PLATFORM == "Linux" ]; then
     success "Found $DISTRO."
   fi
 fi
-
-install_pkg() {
-  for pkg in "$@"; do
-    if [ $(check_pkg_installed $pkg) == 0 ]; then
-      case $DISTRO in
-      void)
-        sudo vpm install $pkg &>/dev/null
-        success "Installed $pkg"
-        ;;
-
-      ubuntu* | debian* | elementary*)
-        sudo apt install $pkg &>/dev/null
-        success "Installed $pkg"
-        ;;
-
-      *)
-        fail "Sorry, don't know how to install packages for $DISTRO"
-        ;;
-      esac
-    fi
-  done
-}
-
-check_pkg_installed() {
-  test $(command -v $1) && return 1 || return 0
-}
 
 info "Determininig package management binary... "
 if [ $DISTRO == "void" ]; then
