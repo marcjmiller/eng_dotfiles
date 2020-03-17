@@ -4,22 +4,22 @@
 set -e
 
 # ===============================================================
-#                       Determine OS 
+#                       Determine OS
 # ===============================================================
 
-info () {
+info() {
   printf "\r  [ \033[00;34m..\033[0m ] $1\n"
 }
 
-user () {
+user() {
   printf "\r  [ \033[0;33m??\033[0m ] $1\n"
 }
 
-success () {
+success() {
   printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
 }
 
-fail () {
+fail() {
   printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
   echo ''
   exit
@@ -29,55 +29,102 @@ info "Determining OS... "
 PLATFORM="unknown"
 
 case $OSTYPE in
-    darwin*) PLATFORM="MacOS";
-    ;;
+darwin*)
+  PLATFORM="MacOS"
+  ;;
 
-    linux*) PLATFORM="Linux";
-    ;;
+linux*)
+  PLATFORM="Linux"
+  ;;
 
-    msys*) PLATFORM="Windows";
-    ;;
+msys*)
+  PLATFORM="Windows"
+  ;;
 
-    *) fail "Unable to determine OS, exiting" 
-    ;;
+*)
+  fail "Unable to determine OS, exiting"
+  ;;
 esac
 
 info "Found $PLATFORM. "
 
 # ===============================================================
+#     Determine how we will install packages prior to brew
+# ===============================================================
+
+if [ $PLATFORM == "Linux" ]; then
+  info "Determining Linux distro... "
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$NAME
+    VER=$VERSION_ID
+    success "Found $OS $VER."
+  fi
+fi
+
+info "Determininig package management binary... "
+if [ $OS == "void" ]; then
+  info "Found Void Linux, installing vpm to ease package management"
+  sudo xbps-install vpm -y
+fi
+
+install_pkg() {
+  for pkg in "$@"; 
+  do
+    case $OS in
+    void)
+      sudo vpm install $pkg &> /dev/null
+      success "Installed $pkg"
+      ;;
+
+    ubuntu*|debian*|elementary*)
+      sudo apt install $pkg &> /dev/null
+      success "Installed $pkg"
+      ;;
+
+    *)
+      fail "Sorry, don't know how to install packages for $OS"
+      ;;
+    esac
+  done
+}
+# ===============================================================
 #     If they're not already there, grab dotfiles from Gitlab
 # ===============================================================
 
 if [[ -f $HOME/.dotfiles/README.md ]]; then
-    info "Gitlab repo has already been pulled, skipping. "
+  info "Gitlab repo has already been pulled, skipping. "
 
 else
-    if [[ $PLATFORM == "MacOS" ]]; then
-        if xcode-select --install 2>&1 | grep installed; then
-		info "xcode-select already installed... "
-	else
-		info "Installing MacOS command-line tools... "
-	fi
-	success "done!"
+  if [[ $PLATFORM == "MacOS" ]]; then
+    if xcode-select --install 2>&1 | grep installed; then
+      info "xcode-select already installed... "
+    else
+      info "Installing MacOS command-line tools... "
     fi
-    
-    info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
-    # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
-    git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
-    wait
     success "done!"
 
-    info "Copying from tmpdotfiles to $HOME... "
-    rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
-    wait
-    success "done!"
+  elif [[ $PLATFORM == "Linux" ]]; then
+    install_pkg git curl
+  fi
 
-    info "Cleaning up tmpdotfiles... "
-    rm -r tmpdotfiles &
-    wait
-    success "done!"
+  info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
+  # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
+  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
+  wait
+  success "done!"
 
-    success "Dotfiles downloaded... "
+  info "Copying from tmpdotfiles to $HOME... "
+  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
+  wait
+  success "done!"
+
+  info "Cleaning up tmpdotfiles... "
+  rm -r tmpdotfiles &
+  wait
+  success "done!"
+
+  success "Dotfiles downloaded... "
 fi
 
 info "Setting local status.showUntrackedFiles no for dotfiles repo... "
@@ -92,34 +139,34 @@ info "Checking for Homebrew... " -n
 
 which -s brew
 if [[ $? != 0 ]]; then
-    info "Homebrew not found. "
-    info "Starting Homebrew installation for $PLATFORM... ";
+  info "Homebrew not found. "
+  info "Starting Homebrew installation for $PLATFORM... "
 
-    if [[ $PLATFORM == "Linux" ]]; then
-        if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then 
-            info "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile... "
-            eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
-
-        else
-            sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)";
-            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'
-            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
-
-        fi
-    elif [[ $PLATFORM == "MacOS" ]]; then
-        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+  if [[ $PLATFORM == "Linux" ]]; then
+    if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+      info "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile... "
+      eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
 
     else
-        fail "Unable to install Homebrew, exiting... ";
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'
+      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
 
     fi
-else 
-    info "Homebrew found at $BREW_LOC. "
+  elif [[ $PLATFORM == "MacOS" ]]; then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+  else
+    fail "Unable to install Homebrew, exiting... "
+
+  fi
+else
+  info "Homebrew found at $BREW_LOC. "
 fi
 
 # ===============================================================
-#             Install Homebrew and run our Brewfile 
+#             Install Homebrew and run our Brewfile
 # ===============================================================
 
 info "Exiting bootstrap, beginning brew... "
@@ -136,7 +183,7 @@ source $HOME/scripts/zsh_setup.sh
 # ===============================================================
 
 if [[ $PLATFORM == "MacOS" ]]; then
-	info "Setting defaults for MacOS... "
-	source $HOME/scripts/set_macos_defaults.sh
-	success "done!"
+  info "Setting defaults for MacOS... "
+  source $HOME/scripts/set_macos_defaults.sh
+  success "done!"
 fi
