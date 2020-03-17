@@ -30,7 +30,7 @@ install_pkg() {
     if [ $(check_pkg_installed $pkg) == 0 ]; then
       case $DISTRO in
       void)
-        sudo vpm install $pkg &>/dev/null
+        sudo xbps-install $pkg &>/dev/null
         success "Installed $pkg"
         ;;
 
@@ -48,7 +48,7 @@ install_pkg() {
 }
 
 check_pkg_installed() {
-  test $(command -v $1) && return 1 || return 0
+  command -v $1 && return 1 || return 0
 }
 
 # ===============================================================
@@ -93,8 +93,8 @@ fi
 
 info "Determininig package management binary... "
 if [ $DISTRO == "void" ]; then
-  info "Found Void Linux, installing vpm to ease package management"
-  install_pkg vpm;
+  info "Found Void Linux, installing via xbps-install"
+  # install_pkg vpm;
 fi
 
 # ===============================================================
@@ -114,7 +114,7 @@ else
     success "done!"
 
   elif [[ $PLATFORM == "Linux" ]]; then
-    install_pkg git curl
+    install_pkg git curl rsync 
   fi
 
   info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
