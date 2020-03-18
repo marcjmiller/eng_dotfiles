@@ -8,7 +8,7 @@ set -e
 # ===============================================================
 
 info() {
-  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+  printf "\r  [\033[00;34mINFO\033[0m] $1\n"
 }
 
 user() {
@@ -30,7 +30,7 @@ install_pkg() {
     if [ $(command -v "$pkg") ]; then
       case $DISTRO in
       void)
-        sudo xbps-install $pkg &>/dev/null
+        sudo xbps-install -y $pkg &>/dev/null
         success "Installed $pkg"
         ;;
 
@@ -46,10 +46,6 @@ install_pkg() {
     fi
   done
 }
-
-# check_pkg_installed() {
-#   command -v "$1" && return 1 || return 0
-# }
 
 # ===============================================================
 #                       Determine OS/DISTRO
@@ -93,8 +89,7 @@ fi
 
 info "Determininig package management binary... "
 if [ $DISTRO == "void" ]; then
-  info "Found Void Linux, installing via xbps-install"
-  # install_pkg vpm;
+  info "Found Void Linux, using xbps-install"
 fi
 
 # ===============================================================
@@ -114,7 +109,9 @@ else
     success "done!"
 
   elif [[ $PLATFORM == "Linux" ]]; then
-    install_pkg git curl rsync 
+    install_pkg git curl rsync
+    # install_pkg curl
+    # install_pkg rsync
   fi
 
   info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
@@ -137,7 +134,7 @@ else
 fi
 
 info "Setting local status.showUntrackedFiles no for dotfiles repo... "
-/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
 success "done!"
 
 # ===============================================================
