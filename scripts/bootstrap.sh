@@ -30,7 +30,8 @@ install_pkg() {
     if [ $(command -v "$pkg") ]; then
       case $DISTRO in
       void)
-        sudo xbps-install -y $pkg &>/dev/null
+        sudo xbps-install -y $pkg &>/dev/null &
+        wait
         success "Installed $pkg"
         ;;
 
@@ -109,7 +110,7 @@ else
     success "done!"
 
   elif [[ $PLATFORM == "Linux" ]]; then
-    install_pkg git curl rsync
+    install_pkg git curl rsync 
     # install_pkg curl
     # install_pkg rsync
   fi
