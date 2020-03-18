@@ -26,27 +26,26 @@ fail() {
 }
 
 install_pkg() {
-  for pkg in "$@"; do
-    if [ $(command -v "$pkg") ]; then
-      case $DISTRO in
-      void)
-        sudo xbps-install -y $pkg &>/dev/null &
-        wait
-        success "Installed $pkg"
-        ;;
+  if [ $(command -v "$1") ]; then
+    case $DISTRO in
+    void)
+      sudo xbps-install -y $1 &>/dev/null &
+      wait
+      success "Installed $1"
+      ;;
 
-      ubuntu* | debian* | elementary*)
-        sudo apt install $pkg &>/dev/null &
-        wait
-        success "Installed $pkg"
-        ;;
+    ubuntu* | debian* | elementary*)
+      sudo apt install $1 &>/dev/null &
+      wait
+      success "Installed $1"
+      ;;
 
-      *)
-        fail "Sorry, don't know how to install packages for $DISTRO"
-        ;;
-      esac
-    fi
-  done
+    *)
+      fail "Sorry, don't know how to install packages for $DISTRO"
+      ;;
+    esac
+  fi
+
 }
 
 # ===============================================================
@@ -63,10 +62,19 @@ darwin*)
 
 linux*)
   PLATFORM="Linux"
+  info "Determining Linux distro... "
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    DISTRO=$NAME
+    success "Found $DISTRO."
+  else
+    fail "Unable to determine distro"
+  fi
   ;;
 
 msys*)
   PLATFORM="Windows"
+  fail "Sorry, these dotfiles don't handle Windows yet, if interested, create a PR."
   ;;
 
 *)
@@ -79,15 +87,6 @@ info "Found $PLATFORM. "
 # ===============================================================
 #     Determine how we will install packages prior to brew
 # ===============================================================
-
-if [ $PLATFORM == "Linux" ]; then
-  info "Determining Linux distro... "
-  if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    DISTRO=$NAME
-    success "Found $DISTRO."
-  fi
-fi
 
 info "Determininig package management binary... "
 if [ $DISTRO == "void" ]; then
