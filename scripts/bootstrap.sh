@@ -36,7 +36,8 @@ install_pkg() {
         ;;
 
       ubuntu* | debian* | elementary*)
-        sudo apt install $pkg &>/dev/null
+        sudo apt install $pkg &>/dev/null &
+        wait
         success "Installed $pkg"
         ;;
 
@@ -110,9 +111,9 @@ else
     success "done!"
 
   elif [[ $PLATFORM == "Linux" ]]; then
-    install_pkg git curl rsync 
-    # install_pkg curl
-    # install_pkg rsync
+    install_pkg git &
+    install_pkg curl &
+    install_pkg rsync &
   fi
 
   info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
