@@ -45,7 +45,6 @@ install_pkg() {
       ;;
     esac
   fi
-
 }
 
 # ===============================================================
@@ -82,16 +81,7 @@ msys*)
   ;;
 esac
 
-info "Found $PLATFORM. "
-
-# ===============================================================
-#     Determine how we will install packages prior to brew
-# ===============================================================
-
-info "Determininig package management binary... "
-if [ $DISTRO == "void" ]; then
-  info "Found Void Linux, using xbps-install"
-fi
+success "Found $PLATFORM. "
 
 # ===============================================================
 #     If they're not already there, grab dotfiles from Gitlab
