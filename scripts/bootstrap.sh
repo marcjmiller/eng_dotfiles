@@ -27,7 +27,7 @@ fail() {
 
 install_pkg() {
   for pkg in "$@"; do
-    if [ $(check_pkg_installed $pkg) == 0 ]; then
+    if [ $(command -v "$pkg") ]; then
       case $DISTRO in
       void)
         sudo xbps-install $pkg &>/dev/null
@@ -47,9 +47,9 @@ install_pkg() {
   done
 }
 
-check_pkg_installed() {
-  command -v $1 && return 1 || return 0
-}
+# check_pkg_installed() {
+#   command -v "$1" && return 1 || return 0
+# }
 
 # ===============================================================
 #                       Determine OS/DISTRO
