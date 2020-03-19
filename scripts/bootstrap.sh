@@ -8,7 +8,7 @@ set -e
 # ===============================================================
 
 info() {
-  printf "\r  [\033[00;34mINFO\033[0m] $1\n"
+  printf "\r  [\033[00;36mINFO\033[0m] $1\n"
 }
 
 user() {
@@ -26,16 +26,17 @@ fail() {
 }
 
 install_pkg() {
-  if [ $(command -v "$1") ]; then
+  if [ !$(command -v "$1") ]; then
     case $DISTRO in
     void)
-      sudo xbps-install -y $1 &>/dev/null &
+      info "Installing $1"
+      sudo xbps-install -y "$1" $>/dev/null &
       wait
       success "Installed $1"
       ;;
 
     ubuntu* | debian* | elementary*)
-      sudo apt install $1 &>/dev/null &
+      sudo apt install "$1" $>/dev/null &
       wait
       success "Installed $1"
       ;;
@@ -48,7 +49,19 @@ install_pkg() {
 }
 
 # ===============================================================
-#                       Determine OS/DISTRO
+#                     Grab sudo and keep it
+# ===============================================================
+
+sudo -v
+while true;
+do 
+  sudo -n true;
+  sleep 60;
+  kill -0 "$$" || exit;
+done 2>/dev/null &
+
+# ===============================================================
+#                         Determine OS
 # ===============================================================
 
 info "Determining OS... "
@@ -57,15 +70,15 @@ PLATFORM="unknown"
 case $OSTYPE in
 darwin*)
   PLATFORM="MacOS"
+  success "Found $PLATFORM."
   ;;
 
 linux*)
   PLATFORM="Linux"
-  info "Determining Linux distro... "
   if [ -f /etc/os-release ]; then
     . /etc/os-release
     DISTRO=$NAME
-    success "Found $DISTRO."
+    success "Found $DISTRO $PLATFORM." 
   else
     fail "Unable to determine distro"
   fi
@@ -73,15 +86,13 @@ linux*)
 
 msys*)
   PLATFORM="Windows"
-  fail "Sorry, these dotfiles don't handle Windows yet, if interested, create a PR."
+  fail "Sorry, these dotfiles don't handle Windows yet, if interested, fork and create a PR."
   ;;
 
 *)
   fail "Unable to determine DISTRO, exiting"
   ;;
 esac
-
-success "Found $PLATFORM. "
 
 # ===============================================================
 #     If they're not already there, grab dotfiles from Gitlab
@@ -100,9 +111,9 @@ else
     success "done!"
 
   elif [[ $PLATFORM == "Linux" ]]; then
-    install_pkg git &
-    install_pkg curl &
-    install_pkg rsync &
+    install_pkg git
+    install_pkg curl
+    install_pkg rsync
   fi
 
   info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
@@ -132,25 +143,19 @@ success "done!"
 #         Install Homebrew/Linuxbrew if not already present
 # ===============================================================
 
-info "Checking for Homebrew... " -n
+info "Checking for Homebrew... "
 
-which -s brew
-if [[ $? != 0 ]]; then
+if [ !$(command -v brew) ]; then
   info "Homebrew not found. "
   info "Starting Homebrew installation for $PLATFORM... "
 
   if [[ $PLATFORM == "Linux" ]]; then
-    if [[ -f /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-      info "/home/linuxbrew/.linuxbrew/bin/brew found, adding to env & ~/.zprofile... "
+    if [ !$(command -v brew) ]; then
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
-
-    else
-      sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'
-      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >>~/.zprofile
-
     fi
+
   elif [[ $PLATFORM == "MacOS" ]]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
