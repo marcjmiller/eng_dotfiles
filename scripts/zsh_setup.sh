@@ -5,13 +5,13 @@
 # ===============================================================
 info "Checking for ZSH... "
 if [[ $(which zsh) == "zsh not found" ]]; then
-    info "ZSH not found, installing... "
-    brew install zsh &> /dev/null
-    wait
-    success "done!"
+  info "ZSH not found, installing... "
+  brew install zsh &>/dev/null
+  wait
+  success "done!"
 
 else
-    info "Found ZSH, skipping. "
+  info "Found ZSH, skipping. "
 fi
 
 # ===============================================================
@@ -19,17 +19,17 @@ fi
 # ===============================================================
 info "Checking for Oh-My-ZSH... "
 if [[ -d $HOME/.oh-my-zsh ]]; then
-    info "Found Oh-My-ZSH, skipping. "
+  info "Found Oh-My-ZSH, skipping. "
 
 else
-    info "$HOME/.oh-my-zsh Not found, installing... "
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &> /dev/null
-    wait
-    success "done!"
+  info "$HOME/.oh-my-zsh Not found, installing... "
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &>/dev/null
+  wait
+  success "done!"
 
-    info "Overwriting default Oh-My-ZSH template .zshrc with ours... "
-    mv $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc &> /dev/null
-    success "done!"    
+  info "Overwriting default Oh-My-ZSH template .zshrc with ours... "
+  mv $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc &>/dev/null
+  success "done!"
 fi
 
 # ===============================================================
@@ -37,13 +37,13 @@ fi
 # ===============================================================
 info "Checking for Powerlevel10K... "
 if [[ -d $ZSH_CUSTOM/themes/powerlevel10k ]]; then
-    info "Found Powerlevel10K, skipping. "
+  info "Found Powerlevel10K, skipping. "
 
 else
-    info "Not found, installing... "
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k &> /dev/null
-    wait
-    success "done!"
+  info "Not found, installing... "
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k &>/dev/null
+  wait
+  success "done!"
 fi
 
 # ===============================================================
@@ -51,13 +51,13 @@ fi
 # ===============================================================
 info "Checking for ZSH-Autosuggestions... "
 if [[ -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
-    info "Found ZSH-Autosuggestions, skipping. "
+  info "Found ZSH-Autosuggestions, skipping. "
 
 else
-    info "Not found, installing... "
-    git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions &> /dev/null
-    wait
-    success "done!"
+  info "Not found, installing... "
+  git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions &>/dev/null
+  wait
+  success "done!"
 fi
 # ===============================================================
 #                 Reload ZSH configuration

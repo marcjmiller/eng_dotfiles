@@ -4,8 +4,8 @@
 #              Ensure Homebrew is newest version
 # ===============================================================
 
-info "Updating Homebrew... " 
-brew update &> /dev/null
+info "Updating Homebrew... "
+brew update &>/dev/null
 wait
 success "done!"
 
@@ -16,25 +16,26 @@ success "done!"
 info "Checking for helpers for $PLATFORM... "
 
 case $PLATFORM in
-    "MacOS") 
-        if [[ ! `brew ls --versions coreutils` ]]; then 
-            info "Not found, installing... ";
-            brew install coreutils &> /dev/null;
-            wait;
-            success "done!"
+"MacOS")
+  if [[ ! $(brew ls --versions coreutils) ]]; then
+    info "Not found, installing... "
+    brew install coreutils &>/dev/null
+    wait
+    success "done!"
 
-        else
-            info "Found coreutils, skipping. "
+  else
+    info "Found coreutils, skipping. "
 
-        fi
-    ;;
-    "Linux") 
-        sudo apt install build-essential curl file git &> /dev/null
-        wait
-        success "done!"
-    ;;
-    *) info "Unable to find helpers for Homebrew for $PLATFORM. "
-    ;;
+  fi
+  ;;
+"Linux")
+  install_pkg build-essential curl file git
+  wait
+  success "done!"
+  ;;
+*)
+  info "Unable to find helpers for Homebrew for $PLATFORM. "
+  ;;
 esac
 
 # ===============================================================
@@ -43,9 +44,9 @@ esac
 
 info "Beginning Homebrew installs... "
 info "Tapping homebrew/bundle... "
-brew tap homebrew/bundle &> /dev/null;
-wait;
+brew tap homebrew/bundle &>/dev/null
+wait
 success "done!"
 
-info "Beginning Homebrew Bundle using ~/scripts/Brewfile-$PLATFORM... "
-brew bundle --file=$HOME/scripts/Brewfile-$PLATFORM
+info "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... "
+brew bundle --file=$HOME/scripts/$PLATFORM/Brewfile

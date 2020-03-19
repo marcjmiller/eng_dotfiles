@@ -20,9 +20,10 @@ brew 'yarn'
 brew 'yarn-completion'
 brew 'mysql'
 brew 'zsh-completion'
+brew 'diff-so-fancy'
 
 # ===============================================================
-#                            Apps
+#                           MacOS Apps
 # ===============================================================
 
 cask 'chromium'
@@ -35,7 +36,7 @@ cask 'hammerspoon'
 cask 'rar'
 
 # ===============================================================
-#                           Fonts
+#                           MacOS Fonts
 # ===============================================================
 
 cask 'font-hasklig-nerd-font'
