@@ -5,8 +5,7 @@
 # ===============================================================
 
 info "Updating Homebrew... "
-brew update &>/dev/null
-wait
+brew update
 success "done!"
 
 # ===============================================================
@@ -29,8 +28,8 @@ case $PLATFORM in
   fi
   ;;
 "Linux")
-  install_pkg build-essential curl file git
-  wait
+  install_pkg file
+  #wait
   success "done!"
   ;;
 *)
@@ -45,7 +44,7 @@ esac
 info "Beginning Homebrew installs... "
 info "Tapping homebrew/bundle... "
 brew tap homebrew/bundle &>/dev/null
-wait
+#wait
 success "done!"
 
 info "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... "
