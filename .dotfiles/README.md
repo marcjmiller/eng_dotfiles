@@ -1,5 +1,5 @@
 Setup a new machine like so:  
-`sh -c "$(curl -fsSL https://raw.githubusercontent.com/marcjmiller/eng_dotfiles/testDevFromLinuxWithoutBareRepo/scripts/bootstrap.sh)"`
+`sh -c "$(curl -fsSL https://raw.githubusercontent.com/marcjmiller/eng_dotfiles/master/scripts/bootstrap.sh)"`
 
 OLD
 To setup a new machine:
