@@ -112,7 +112,7 @@ if [[ -f $HOME/.dotfiles/README.md ]]; then
 
 else
   if [[ $PLATFORM == "MacOS" ]]; then
-    if xcode-select --install 2>/dev/null & | grep installed; then
+    if xcode-select --install | grep installed; then
       info "xcode-select already installed... "
     else
       info "Installing MacOS command-line tools... "
