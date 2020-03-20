@@ -131,15 +131,15 @@ else
 
   info "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
   # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
-  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
+  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
-  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME &
+  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME
   success "done!"
 
   info "Cleaning up tmpdotfiles... "
-  rm -r tmpdotfiles &
+  rm -r tmpdotfiles
   success "done!"
 
   success "Dotfiles downloaded... "
@@ -162,12 +162,12 @@ else
   info "Starting Homebrew installation for $PLATFORM... "
   if [ $PLATFORM == "Linux" ]; then
     if [ !$(command -v brew) ]; then
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" &
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     fi
   elif [ $PLATFORM == "MacOS" ]; then
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
     fail "Unable to install Homebrew, exiting... "
   fi
