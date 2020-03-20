@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-task () {
-  printf "\r  [ \033[00;34mTASK\033[0m ] $1\n"
-}
-
-success () {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
-}
-
 # Close any System Preferences panes, to ensure settings stick
 task "Closing any active System Preferences windows"
 osascript -e 'tell application "System Preferences" to quit'

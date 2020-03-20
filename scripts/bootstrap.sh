@@ -11,6 +11,10 @@ info() {
   printf "\r  [\033[00;36mINFO\033[0m] $1\n"
 }
 
+task () {
+  printf "\r  [ \033[00;34mTASK\033[0m ] $1\n"
+}
+
 user() {
   printf "\r  [ \033[0;33m??\033[0m ] $1\n"
 }
@@ -26,26 +30,29 @@ fail() {
 }
 
 install_pkg() {
-  if [ !$(command -v "$1") ]; then
-    case $DISTRO in
-    void)
-      info "Installing $1"
-      sudo xbps-install -y "$1" $>/dev/null &
-      wait
-      success "Installed $1"
-      ;;
+  for $pkg; do
+    if [ $(command -v "$pkg") ]; then
+      info "$pkg already installed..."
 
-    ubuntu* | debian* | elementary*)
-      sudo apt install "$1" $>/dev/null &
-      wait
-      success "Installed $1"
-      ;;
+    else 
+      case $DISTRO in
+      void)
+        info "Installing $pkg"
+        sudo xbps-install -y "$pkg" &>/dev/null  
+        success "Installed $pkg"
+        ;;
 
-    *)
-      fail "Sorry, don't know how to install packages for $DISTRO"
-      ;;
-    esac
-  fi
+      ubuntu* | debian* | elementary*)
+        sudo apt install "$pkg" &>/dev/null
+        success "Installed $pkg"
+        ;;
+
+      *)
+        fail "Sorry, don't know how to install packages for $DISTRO"
+        ;;
+      esac
+    fi
+  done
 }
 
 # ===============================================================
@@ -53,8 +60,7 @@ install_pkg() {
 # ===============================================================
 
 sudo -v
-while true;
-do 
+while true; do 
   sudo -n true;
   sleep 60;
   kill -0 "$$" || exit;
@@ -90,16 +96,16 @@ msys*)
   ;;
 
 *)
-  fail "Unable to determine DISTRO, exiting"
+  fail "Unable to determine distro, exiting"
   ;;
 esac
 
 # ===============================================================
-#     If they're not already there, grab dotfiles from Gitlab
+#     If they're not already there, grab dotfiles fhe repo
 # ===============================================================
 
 if [[ -f $HOME/.dotfiles/README.md ]]; then
-  info "Gitlab repo has already been pulled, skipping. "
+  info "Repo has already been pulled, skipping. "
 
 else
   if [[ $PLATFORM == "MacOS" ]]; then
@@ -111,25 +117,27 @@ else
     success "done!"
 
   elif [[ $PLATFORM == "Linux" ]]; then
-    install_pkg git
-    install_pkg curl
-    install_pkg rsync
+    # install_pkg git
+    # install_pkg curl
+    # install_pkg rsync
+    # install_pkg gcc
+    # install_pkg file
+    # install_pkg wget
+    # install_pkg zsh
+    install_pkg git curl rsync file wget zsh
   fi
 
   info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
   # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
   git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
-  wait
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
   rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
-  wait
   success "done!"
 
   info "Cleaning up tmpdotfiles... "
   rm -r tmpdotfiles &
-  wait
   success "done!"
 
   success "Dotfiles downloaded... "
@@ -145,7 +153,9 @@ success "done!"
 
 info "Checking for Homebrew... "
 
-if [ !$(command -v brew) ]; then
+if [ $(command -v brew) ]; then
+  info "Homebrew found, skipping install"
+else
   info "Homebrew not found. "
   info "Starting Homebrew installation for $PLATFORM... "
 
@@ -163,8 +173,6 @@ if [ !$(command -v brew) ]; then
     fail "Unable to install Homebrew, exiting... "
 
   fi
-else
-  info "Homebrew found at $BREW_LOC. "
 fi
 
 # ===============================================================

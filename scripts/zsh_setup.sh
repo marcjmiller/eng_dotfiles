@@ -6,6 +6,7 @@
 info "Checking for ZSH... "
 if [ $(command -v zsh) ]; then
   info "Found ZSH, skipping. "
+
 else
   info "ZSH not found, installing... "
   install_pkg zsh 
@@ -54,9 +55,11 @@ else
   git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
   success "done!"
 fi
+
 # ===============================================================
 #                 Reload ZSH configuration
 # ===============================================================
-info "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K.  Hold on to your butts..."
-source ~/.zshrc
-success "done!"
+
+# info "Loading new config w/ ZSH, Oh-My-ZSH, and Powerlevel10K.  Hold on to your butts..."
+# source ~/.zshrc
+# success "done!"

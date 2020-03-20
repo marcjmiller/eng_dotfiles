@@ -27,14 +27,17 @@ case $PLATFORM in
 
   fi
   ;;
+
 "Linux")
   install_pkg file
   #wait
   success "done!"
   ;;
+
 *)
   info "Unable to find helpers for Homebrew for $PLATFORM. "
   ;;
+
 esac
 
 # ===============================================================
@@ -44,7 +47,6 @@ esac
 info "Beginning Homebrew installs... "
 info "Tapping homebrew/bundle... "
 brew tap homebrew/bundle &>/dev/null
-#wait
 success "done!"
 
 info "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... "

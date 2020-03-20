@@ -26,18 +26,18 @@ fail() {
 }
 
 install_pkg() {
-  if [ $(command -v "$1") ]; then
-    info "$1 already installed..."
-  else 
+  if [ !$(command -v "$1") ]; then
     case $DISTRO in
     void)
       info "Installing $1"
-      sudo xbps-install -y "$1" &>/dev/null  
+      sudo xbps-install -y "$1" $>/dev/null &
+      wait
       success "Installed $1"
       ;;
 
     ubuntu* | debian* | elementary*)
-      sudo apt install "$1" &>/dev/null
+      sudo apt install "$1" $>/dev/null &
+      wait
       success "Installed $1"
       ;;
 
@@ -90,7 +90,7 @@ msys*)
   ;;
 
 *)
-  fail "Unable to determine distro, exiting"
+  fail "Unable to determine DISTRO, exiting"
   ;;
 esac
 
@@ -114,26 +114,22 @@ else
     install_pkg git
     install_pkg curl
     install_pkg rsync
-    install_pkg gcc
-    install_pkg file
-    install_pkg wget
-    install_pkg zsh
   fi
 
   info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
   # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
   git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
-  #wait
+  wait
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
   rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
-  #wait
+  wait
   success "done!"
 
   info "Cleaning up tmpdotfiles... "
   rm -r tmpdotfiles &
-  #wait
+  wait
   success "done!"
 
   success "Dotfiles downloaded... "
@@ -149,9 +145,7 @@ success "done!"
 
 info "Checking for Homebrew... "
 
-if [ $(command -v brew) ]; then
-  info "Homebrew found, skipping install"
-else
+if [ !$(command -v brew) ]; then
   info "Homebrew not found. "
   info "Starting Homebrew installation for $PLATFORM... "
 
@@ -169,6 +163,8 @@ else
     fail "Unable to install Homebrew, exiting... "
 
   fi
+else
+  info "Homebrew found at $BREW_LOC. "
 fi
 
 # ===============================================================
