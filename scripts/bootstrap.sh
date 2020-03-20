@@ -42,7 +42,7 @@ install_pkg() {
         success "Installed $pkg"
         ;;
 
-      ubuntu* | debian* | elementary*)
+      ubuntu* | debian* | elementary* | Pop*)
         sudo apt install "$pkg" &>/dev/null
         success "Installed $pkg"
         ;;
