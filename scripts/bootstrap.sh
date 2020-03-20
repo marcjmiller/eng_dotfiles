@@ -75,12 +75,12 @@ info "Determining OS... "
 PLATFORM="unknown"
 
 case $OSTYPE in
-darwin*)
+"darwin"*)
   PLATFORM="MacOS"
   success "Found $PLATFORM."
   ;;
 
-linux-gnu)
+"linux-gnu")
   PLATFORM="Linux"
   if [ -f /etc/os-release ]; then
     . /etc/os-release
@@ -93,14 +93,14 @@ linux-gnu)
   fi
   ;;
 
-msys*)
+"msys"*)
   PLATFORM="Windows"
   fail "Sorry, these dotfiles don't handle Windows yet, if interested, fork and create a PR."
   ;;
 
 *)
   info "Troubleshooting info: Platform: $PLATFORM, Distro: $DISTRO"
-  fail "Unable to determine distro, exiting... "
+  fail "Unable to determine Platform, exiting... "
   ;;
 esac
 
