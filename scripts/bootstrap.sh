@@ -107,11 +107,11 @@ esac
 #     If they're not already there, grab dotfiles fhe repo
 # ===============================================================
 
-if [[ -f $HOME/.dotfiles/README.md ]]; then
+if [ -f $HOME/.dotfiles/README.md ]; then
   info "Repo has already been pulled, skipping. "
 
 else
-  if [[ $PLATFORM == "MacOS" ]]; then
+  if [ $PLATFORM == "MacOS" ]; then
     if xcode-select --install 2>&1 | grep installed; then
       info "xcode-select already installed... "
     else
@@ -119,7 +119,7 @@ else
     fi
     success "done!"
 
-  elif [[ $PLATFORM == "Linux" ]]; then
+  elif [ $PLATFORM == "Linux" ]; then
     # install_pkg git
     # install_pkg curl
     # install_pkg rsync
@@ -162,14 +162,14 @@ else
   info "Homebrew not found. "
   info "Starting Homebrew installation for $PLATFORM... "
 
-  if [[ $PLATFORM == "Linux" ]]; then
+  if [ $PLATFORM == "Linux" ]; then
     if [ !$(command -v brew) ]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 2>/dev/null &
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     fi
 
-  elif [[ $PLATFORM == "MacOS" ]]; then
+  elif [ $PLATFORM == "MacOS" ]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 2>/dev/null &
 
   else
@@ -195,7 +195,7 @@ source $HOME/scripts/zsh_setup.sh
 #                  Set some sane MacOS defaults
 # ===============================================================
 
-if [[ $PLATFORM == "MacOS" ]]; then
+if [ $PLATFORM == "MacOS" ]; then
   info "Setting defaults for MacOS... "
   source $HOME/scripts/set_macos_defaults.sh
   success "done!"
