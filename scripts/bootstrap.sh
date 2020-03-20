@@ -74,8 +74,8 @@ done 2>/dev/null &
 info "Determining OS... "
 PLATFORM="unknown"
 
-case $OSTYPE in
-"darwin"*)
+case $(uname) in
+"darwin")
   PLATFORM="MacOS"
   success "Found $PLATFORM."
   ;;
@@ -88,18 +88,17 @@ case $OSTYPE in
     success "Found $DISTRO $PLATFORM." 
   else
     info "/etc/os-release contains: $(cat /etc/os-release)"
-    info "Troubleshooting info: Platform: $PLATFORM, Distro: $DISTRO"
     fail "Unable to determine distro"
   fi
   ;;
 
-"msys"*)
+"msys")
   PLATFORM="Windows"
   fail "Sorry, these dotfiles don't handle Windows yet, if interested, fork and create a PR."
   ;;
 
 *)
-  info "Troubleshooting info: Platform: $PLATFORM, Distro: $DISTRO"
+  info "Troubleshooting info: uname output $(uname)"
   fail "Unable to determine Platform, exiting... "
   ;;
 esac
