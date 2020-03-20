@@ -159,21 +159,21 @@ if [ $(command -v brew) ]; then
   info "Homebrew found, skipping install"
 else
   info "Homebrew not found. "
-  info "Starting Homebrew installation for $PLATFORM... "
-  
+  info "Starting Homebrew installation for $PLATFORM..."
   case $PLATFORM in
-    "Linux")
+    Linux)
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     ;;
 
-    "MacOS")
+    MacOS)
       /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     ;;
 
     *)
       fail "Unable to install Homebrew for $PLATFORM, exiting... "
+    ;;
   esac
 fi
 
