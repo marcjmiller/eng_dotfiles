@@ -30,8 +30,7 @@ fail() {
 }
 
 install_pkg() {
-  for pkg in "$@"
-  do
+  while [ -n "$pkg" ]; do
     if [ $(command -v "$pkg") ]; then
       info "$pkg already installed..."
 
@@ -53,6 +52,7 @@ install_pkg() {
         ;;
       esac
     fi
+    shift
   done
 }
 
