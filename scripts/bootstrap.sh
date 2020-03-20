@@ -109,7 +109,6 @@ esac
 
 if [ -f $HOME/.dotfiles/README.md ]; then
   info "Repo has already been pulled, skipping. "
-
 else
   if [ $PLATFORM == "MacOS" ]; then
     if xcode-select --install 2>&1 | grep installed; then
@@ -118,7 +117,6 @@ else
       info "Installing MacOS command-line tools... "
     fi
     success "done!"
-
   elif [ $PLATFORM == "Linux" ]; then
     # install_pkg git
     # install_pkg curl
@@ -137,7 +135,7 @@ else
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
-  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
+  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME &
   success "done!"
 
   info "Cleaning up tmpdotfiles... "
@@ -162,20 +160,16 @@ if [ $(command -v brew) ]; then
 else
   info "Homebrew not found. "
   info "Starting Homebrew installation for $PLATFORM... "
-
   if [ $PLATFORM == "Linux" ]; then
     if [ !$(command -v brew) ]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" &
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     fi
-
   elif [ $PLATFORM == "MacOS" ]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &
-
   else
     fail "Unable to install Homebrew, exiting... "
-
   fi
 fi
 
