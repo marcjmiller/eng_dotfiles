@@ -124,7 +124,8 @@ else
     # install_pkg curl
     # install_pkg rsync
     # install_pkg gcc
-    # install_pkg file
+    # install_pkg filetmpdotfiles 2>/dev/null &
+  success "done!"
     # install_pkg wget
     # install_pkg zsh
     install_pkg git curl rsync file wget zsh
@@ -132,7 +133,7 @@ else
 
   info "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
   # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
-  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles 2>/dev/null &
+  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
