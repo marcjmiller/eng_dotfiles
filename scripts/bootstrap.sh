@@ -75,12 +75,12 @@ info "Determining OS... "
 PLATFORM="unknown"
 
 case $(uname) in
-"darwin")
+"Darwin")
   PLATFORM="MacOS"
   success "Found $PLATFORM."
   ;;
 
-"linux-gnu")
+"Linux")
   PLATFORM="Linux"
   if [ -f /etc/os-release ]; then
     . /etc/os-release
