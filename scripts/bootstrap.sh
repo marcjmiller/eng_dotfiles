@@ -30,7 +30,7 @@ fail() {
 }
 
 install_pkg() {
-  for pkg
+  for pkg in "$@"
   do
     if [ $(command -v "$pkg") ]; then
       info "$pkg already installed..."
