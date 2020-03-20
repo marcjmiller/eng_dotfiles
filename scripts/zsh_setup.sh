@@ -22,7 +22,7 @@ if [[ -d $HOME/.oh-my-zsh ]]; then
 
 else
   info "$HOME/.oh-my-zsh Not found, installing... "
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 2>/dev/null &
   success "done!"
 
   info "Overwriting default Oh-My-ZSH template .zshrc with ours... "
@@ -39,7 +39,7 @@ if [[ -d $ZSH_CUSTOM/themes/powerlevel10k ]]; then
 
 else
   info "Not found, installing... "
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k 2>/dev/null &
   success "done!"
 fi
 
@@ -52,7 +52,7 @@ if [[ -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
 
 else
   info "Not found, installing... "
-  git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+  git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions 2>/dev/null &
   success "done!"
 fi
 

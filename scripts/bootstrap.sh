@@ -8,23 +8,23 @@ set -e
 # ===============================================================
 
 info() {
-  printf "\r  [\033[00;36mINFO\033[0m] $1\n"
+  printf "\r  [ \033[00;36mINFO\033[0m ] $1\n"
 }
 
-task () {
+task() {
   printf "\r  [ \033[00;34mTASK\033[0m ] $1\n"
 }
 
 user() {
-  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+  printf "\r  [  \033[0;33m??\033[0m  ] $1\n"
 }
 
 success() {
-  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+  printf "\r\033[2K  [  \033[00;32mOK\033[0m  ] $1\n"
 }
 
 fail() {
-  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+  printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1\n"
   echo ''
   exit
 }
@@ -38,12 +38,12 @@ install_pkg() {
       case $DISTRO in
       void)
         info "Installing $pkg"
-        sudo xbps-install -y "$pkg" &>/dev/null  
+        sudo xbps-install -y "$pkg" 2>/dev/null &  
         success "Installed $pkg"
         ;;
 
       ubuntu* | debian* | elementary* | Pop*)
-        sudo apt install "$pkg" &>/dev/null
+        sudo apt install "$pkg" 2>/dev/null &
         success "Installed $pkg"
         ;;
 
@@ -111,7 +111,7 @@ if [[ -f $HOME/.dotfiles/README.md ]]; then
 
 else
   if [[ $PLATFORM == "MacOS" ]]; then
-    if xcode-select --install 2>&1 | grep installed; then
+    if xcode-select --install 2>/dev/null & | grep installed; then
       info "xcode-select already installed... "
     else
       info "Installing MacOS command-line tools... "
@@ -129,13 +129,13 @@ else
     install_pkg git curl rsync file wget zsh
   fi
 
-  info "Dotfiles not found, cloning repo from gitlab to tmpdotfiles in $HOME... "
+  info "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
   # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
-  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles &
+  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles 2>/dev/null &
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
-  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
+  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ 2>/dev/null &
   success "done!"
 
   info "Cleaning up tmpdotfiles... "
@@ -163,13 +163,13 @@ else
 
   if [[ $PLATFORM == "Linux" ]]; then
     if [ !$(command -v brew) ]; then
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 2>/dev/null &
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     fi
 
   elif [[ $PLATFORM == "MacOS" ]]; then
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 2>/dev/null &
 
   else
     fail "Unable to install Homebrew, exiting... "

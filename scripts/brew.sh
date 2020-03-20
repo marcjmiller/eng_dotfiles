@@ -18,7 +18,7 @@ case $PLATFORM in
 "MacOS")
   if [[ ! $(brew ls --versions coreutils) ]]; then
     info "Not found, installing... "
-    brew install coreutils &>/dev/null
+    brew install coreutils 2>/dev/null &
     wait
     success "done!"
 
@@ -29,13 +29,11 @@ case $PLATFORM in
   ;;
 
 "Linux")
-  install_pkg file
-  #wait
-  success "done!"
+  success "Nothing to do on $PLATFORM"
   ;;
 
 *)
-  info "Unable to find helpers for Homebrew for $PLATFORM. "
+  info "Unable to find helpers for Homebrew for $PLATFORM.  Attempting to continue... "
   ;;
 
 esac
@@ -46,8 +44,8 @@ esac
 
 info "Beginning Homebrew installs... "
 info "Tapping homebrew/bundle... "
-brew tap homebrew/bundle &>/dev/null
+brew tap homebrew/bundle 2>/dev/null &
 success "done!"
 
 info "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... "
-brew bundle --file=$HOME/scripts/$PLATFORM/Brewfile
+brew bundle --file=$HOME/scripts/$PLATFORM/Brewfile 
