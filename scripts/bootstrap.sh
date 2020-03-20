@@ -87,6 +87,7 @@ linux*|linux-gnu)
     DISTRO=$NAME
     success "Found $DISTRO $PLATFORM." 
   else
+    cat /etc/os-release
     fail "Unable to determine distro"
   fi
   ;;
