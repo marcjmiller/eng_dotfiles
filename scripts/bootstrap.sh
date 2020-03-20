@@ -161,15 +161,13 @@ else
   info "Homebrew not found. "
   info "Starting Homebrew installation for $PLATFORM... "
   if [ $PLATFORM == "Linux" ]; then
-    if [ !$(command -v brew) ]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    fi
   elif [ $PLATFORM == "MacOS" ]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
   else
-    fail "Unable to install Homebrew, exiting... "
+    fail "Unable to install Homebrew for $PLATFORM, exiting... "
   fi
 fi
 
