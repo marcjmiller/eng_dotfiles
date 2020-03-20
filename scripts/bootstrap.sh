@@ -38,12 +38,12 @@ install_pkg() {
       case $DISTRO in
       void)
         info "Installing $pkg"
-        sudo xbps-install -y "$pkg" 2>/dev/null &  
+        sudo xbps-install -y "$pkg" &  
         success "Installed $pkg"
         ;;
 
       ubuntu*|debian*|elementary*|Pop*)
-        sudo apt install "$pkg" 2>/dev/null &
+        sudo apt install "$pkg" &
         success "Installed $pkg"
         ;;
 
@@ -136,7 +136,7 @@ else
   success "done!"
 
   info "Copying from tmpdotfiles to $HOME... "
-  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ 2>/dev/null &
+  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME/ &
   success "done!"
 
   info "Cleaning up tmpdotfiles... "
@@ -164,13 +164,13 @@ else
 
   if [ $PLATFORM == "Linux" ]; then
     if [ !$(command -v brew) ]; then
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" 2>/dev/null &
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)" &
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     fi
 
   elif [ $PLATFORM == "MacOS" ]; then
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 2>/dev/null &
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" &
 
   else
     fail "Unable to install Homebrew, exiting... "
