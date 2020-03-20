@@ -110,25 +110,30 @@ esac
 if [ -f $HOME/.dotfiles/README.md ]; then
   info "Repo has already been pulled, skipping. "
 else
+  info "Installing helpers for $PLATFORM"
+  
   if [ $PLATFORM == "MacOS" ]; then
     if xcode-select --install 2>&1 | grep installed; then
       info "xcode-select already installed... "
+      
     else
       info "Installing MacOS command-line tools... "
+      
     fi
     success "done!"
+    
   elif [ $PLATFORM == "Linux" ]; then
     # install_pkg git
     # install_pkg curl
     # install_pkg rsync
     # install_pkg gcc
-    # install_pkg filetmpdotfiles 2>/dev/null &
-  success "done!"
+    # install_pkg file
     # install_pkg wget
     # install_pkg zsh
     install_pkg git curl rsync file wget zsh
   fi
-
+  success "done!"
+  
   info "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
   # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
   git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles
