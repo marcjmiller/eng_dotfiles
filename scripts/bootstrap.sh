@@ -80,7 +80,7 @@ darwin*)
   success "Found $PLATFORM."
   ;;
 
-linux*|linux-gnu)
+linux*)
   PLATFORM="Linux"
   if [ -f /etc/os-release ]; then
     . /etc/os-release
