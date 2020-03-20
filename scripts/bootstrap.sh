@@ -98,7 +98,8 @@ msys*)
   ;;
 
 *)
-  fail "Unable to determine distro, exiting"
+  info "Troubleshooting info: Platform: $PLATFORM, Distro: $DISTRO"
+  fail "Unable to determine distro, exiting... "
   ;;
 esac
 
