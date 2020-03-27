@@ -4,14 +4,16 @@ alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 # set aliases to make managing dotfiles easier 
 alias dau='dotfiles add -u'
 alias da='dotfiles add'
+alias dcb='dotfiles checkout -b'
 alias dcm='dotfiles commit -m'
+alias dco='dotfiles checkout'
 alias dp='dotfiles push'
 alias ds='dotfiles status'
 alias dss='dotfiles status -s'
-alias dl='dotfiles log'
+alias dl='dotfiles pull'
 alias dlo='dotfiles log --oneline'
 alias dlog='dotfiles log --oneline --decorate --graph'
-alias dst='dotfiles stash'
+alias dsta='dotfiles stash'
 alias dstp='dotfiles stash pop'
 
 # more git aliases specific to the DGS1 SDT

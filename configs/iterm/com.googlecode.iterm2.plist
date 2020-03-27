@@ -72,7 +72,7 @@
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>560 471 799 448 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>960 58 952 999 0 0 1920 1057 </string>
+	<string>0 570 910 487 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>0 570 925 487 0 0 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -259,7 +259,9 @@
 			<key>Blinking Cursor</key>
 			<false/>
 			<key>Blur</key>
-			<false/>
+			<true/>
+			<key>Blur Radius</key>
+			<real>18.227823604060912</real>
 			<key>Bold Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -894,7 +896,7 @@
 		<key>screenFrame</key>
 		<string>{{0, 0}, {1920, 1080}}</string>
 		<key>topLeft</key>
-		<string>{189, 969}</string>
+		<string>{703, 711}</string>
 	</dict>
 	<key>NoSyncInstallUtilitiesPackage</key>
 	<true/>
@@ -903,15 +905,17 @@
 	<key>NoSyncInstallationId</key>
 	<string>6948CA4E-C784-494F-968A-68CD7704E47A</string>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>7</integer>
+	<integer>14</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
 	<integer>0</integer>
 	<key>NoSyncNextAnnoyanceTime</key>
-	<real>606081388.35929203</real>
+	<real>606187157.41166699</real>
 	<key>NoSyncOnboardingWindowHasBeenShown</key>
 	<true/>
+	<key>NoSyncPermissionToShowTip</key>
+	<false/>
 	<key>NoSyncRecordedVariables</key>
 	<dict>
 		<key>0</key>
@@ -1704,7 +1708,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-03-14T20:06:39Z</date>
+	<date>2020-03-23T17:24:35Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SoundForEsc</key>

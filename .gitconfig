@@ -65,7 +65,7 @@
 #   the user whose credentials will go into all commits
 [user]
 	name = Marc Miller
-	email = marc.miller.4@us.af.mil
+	email = millermj@dgs1sdt.com
 
 #   Detect copies as well as renames
 [diff]
@@ -83,3 +83,8 @@
 #   allow 'gis.io:' vs 'git@gitlab.devops.geointservices.io:' for SSH to Geoint Services
 [url "git@gitlab.devops.geointservices.io"]
     insteadOf = "gis.io:"
+[git-together]
+	active = mm
+[git-together "user"]
+	name = Marc Miller
+	email = marc.miller.4@us.af.mil
