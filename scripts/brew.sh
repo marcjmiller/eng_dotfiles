@@ -19,7 +19,6 @@ case $PLATFORM in
   if [[ ! $(brew ls --versions coreutils) ]]; then
     info "Not found, installing... "
     brew install coreutils 2>/dev/null &
-    wait
     success "done!"
 
   else

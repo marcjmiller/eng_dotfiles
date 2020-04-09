@@ -47,12 +47,12 @@ fi
 #                 Install ZSH-AutoSuggestions
 # ===============================================================
 info "Checking for ZSH-Autosuggestions... "
-if [[ -d $ZSH_CUSTOM/plugins/zsh-autosuggestions ]]; then
+if [[ -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]]; then
   info "Found ZSH-Autosuggestions, skipping. "
 
 else
   info "Not found, installing... "
-  git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions 2>/dev/null &
+  git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions 2>/dev/null &
   success "done!"
 fi
 

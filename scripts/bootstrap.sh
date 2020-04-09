@@ -123,19 +123,11 @@ else
     success "done!"
     
   elif [ $PLATFORM == "Linux" ]; then
-    # install_pkg git
-    # install_pkg curl
-    # install_pkg rsync
-    # install_pkg gcc
-    # install_pkg file
-    # install_pkg wget
-    # install_pkg zsh
     install_pkg git curl rsync file wget zsh
   fi
   success "done!"
   
   info "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
-  # git clone --separate-git-dir=$HOME/.dotfiles git@gitlab.devops.geointservices.io:dgs1sdt/engineer-dotfiles.git tmpdotfiles &
   git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles
   success "done!"
 
@@ -173,7 +165,7 @@ else
     ;;
 
     MacOS)
-      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
     ;;
 
     *)
@@ -201,6 +193,6 @@ source $HOME/scripts/zsh_setup.sh
 
 if [ $PLATFORM == "MacOS" ]; then
   info "Setting defaults for MacOS... "
-  source $HOME/scripts/set_macos_defaults.sh
+  source $HOME/scripts/MacOS/set_macos_defaults.sh
   success "done!"
 fi
