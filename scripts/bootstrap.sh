@@ -183,6 +183,14 @@ if [ $PLATFORM == "MacOS" ]; then
 fi
 
 # ===============================================================
+#              Link configs for apps that need it
+# ===============================================================
+
+task "Copying configs for the apps that need it..."
+source $HOME/scripts/link_configs.sh
+success "Copying configs for the apps that need it... done!"
+
+# ===============================================================
 #                  Setup SSH key for version control
 # ===============================================================
 

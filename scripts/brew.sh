@@ -8,6 +8,7 @@ task "Checking for Homebrew... "
 
 if [ $(command -v brew) ]; then
   skip "Checking for Homebrew... Homebrew found, skipping."
+  if grep -q $group /etc/brew
 else
   task "Checking for Homebrew... Homebrew not found, installing... "
   case $PLATFORM in
