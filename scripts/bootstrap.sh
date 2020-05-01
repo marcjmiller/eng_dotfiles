@@ -11,22 +11,27 @@ info() {
   printf "\r  [ \033[00;36mINFO\033[0m ] $1\n"
 }
 
+success() {
+  printf "\r\033[2K  [ \033[00;32mDONE\033[0m ] $1\n"
+}
+
 task() {
-  printf "\r  [ \033[00;34mTASK\033[0m ] $1\n"
+  printf "\r  [ \033[00;34mTASK\033[0m ] $1\r"
 }
 
 user() {
   printf "\r  [  \033[0;33m??\033[0m  ] $1\n"
 }
 
-success() {
-  printf "\r\033[2K  [  \033[00;32mOK\033[0m  ] $1\n"
-}
-
 fail() {
   printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] $1\n"
   echo ''
   exit
+}
+
+wait_last() {
+  BACKPID=$!
+  wait $BACKPID
 }
 
 install_pkg() {
@@ -37,14 +42,17 @@ install_pkg() {
     else 
       case $DISTRO in
       void)
-        info "Installing $pkg"
-        sudo xbps-install -y "$pkg" &  
-        success "Installed $pkg"
+        task "Installing $pkg"
+        sudo xbps-install -y "$pkg" > /dev/null 2>&1 &
+        wait_last  
+        success "Installing $pkg"
         ;;
 
       ubuntu*|debian*|elementary*|Pop*)
-        sudo apt install "$pkg" &
-        success "Installed $pkg"
+        task "Installing $pkg"
+        sudo apt install -y "$pkg" > /dev/null 2>&1 &
+        wait_last
+        success "Installing $pkg"
         ;;
 
       *)
@@ -107,8 +115,8 @@ esac
 #     If they're not already there, grab dotfiles fhe repo
 # ===============================================================
 
-if [ -f $HOME/.dotfiles/README.md ]; then
-  info "Repo has already been pulled, skipping. "
+if [ -d $HOME/.dotfiles/ ]; then
+  info "dotfiles repo has already been pulled, skipping. "
 else
   info "Installing helpers for $PLATFORM"
   
@@ -117,7 +125,7 @@ else
       info "xcode-select already installed... "
       
     else
-      info "Installing MacOS command-line tools... "
+      task "Installing MacOS command-line tools... "
       
     fi
     success "done!"
@@ -127,24 +135,26 @@ else
   fi
   success "done!"
   
-  info "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
-  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles
-  success "done!"
+  task "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
+  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles > /dev/null 2>&1 &
+  wait_last
+  success "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
 
-  info "Copying from tmpdotfiles to $HOME... "
-  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME
-  success "done!"
+  task "Copying from tmpdotfiles to $HOME... "
+  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME > /dev/null 2>&1 &
+  wait_last
+  success "Copying from tmpdotfiles to $HOME... "
 
-  info "Cleaning up tmpdotfiles... "
+  task "Cleaning up tmpdotfiles... "
   rm -r tmpdotfiles
-  success "done!"
+  success "Cleaning up tmpdotfiles... "
 
   success "Dotfiles downloaded... "
 fi
 
-info "Setting local status.showUntrackedFiles no for dotfiles repo... "
+task "Setting local status.showUntrackedFiles no for dotfiles repo... "
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
-success "done!"
+success "Setting local status.showUntrackedFiles no for dotfiles repo... "
 
 # ===============================================================
 #         Install Homebrew/Linuxbrew if not already present
@@ -156,18 +166,20 @@ if [ $(command -v brew) ]; then
   info "Homebrew found, skipping install"
 else
   info "Homebrew not found. "
-  info "Starting Homebrew installation for $PLATFORM..."
+  task "Starting Homebrew installation for $PLATFORM..."
   case $PLATFORM in
     Linux)
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
       eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+      success "Starting Homebrew installation for $PLATFORM..."
     ;;
 
     MacOS)
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-      
-      info "Creating brew group and chmod'ing to make homebrew multi-user..."
+      success "Starting Homebrew installation for $PLATFORM..."
+
+      task "Creating brew group and chmod'ing to make homebrew multi-user..."
       sudo dscl . create /Groups/brew Homebrew "Users that can access Homebrew"
       sudo dscl . create /Groups/brew gid 405
       sudo dscl . create /Groups/brew GroupMembership $(whoami)
@@ -176,7 +188,7 @@ else
       sudo mkdir /usr/local/Frameworks
       sudo chgrp -R brew /usr/local/Frameworks
       sudo chmod -R g+w /usr/local/Frameworks
-      success "done!"
+      success "Creating brew group and chmod'ing to make homebrew multi-user..."
     ;;
 
     *)
@@ -203,7 +215,7 @@ source $HOME/scripts/zsh_setup.sh
 # ===============================================================
 
 if [ $PLATFORM == "MacOS" ]; then
-  info "Setting defaults for MacOS... "
+  task "Setting defaults for MacOS... "
   source $HOME/scripts/MacOS/set_macos_defaults.sh
-  success "done!"
+  success "Setting defaults for MacOS... "
 fi

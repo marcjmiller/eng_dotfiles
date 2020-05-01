@@ -4,9 +4,10 @@
 #              Ensure Homebrew is newest version
 # ===============================================================
 
-info "Updating Homebrew... "
-brew update
-success "done!"
+task "Updating Homebrew... "
+brew update > /dev/null 2>&1 &
+wait_last
+success  "Updating Homebrew... "
 
 # ===============================================================
 #            Install helpers for Homebrew by OS
@@ -17,9 +18,10 @@ info "Checking for helpers for $PLATFORM... "
 case $PLATFORM in
 "MacOS")
   if [[ ! $(brew ls --versions coreutils) ]]; then
-    info "Not found, installing... "
-    brew install coreutils 2>/dev/null &
-    success "done!"
+    task "Coreutils not found, installing... "
+    brew install coreutils > /dev/null 2>&1 &
+    wait_last
+    success  "Coreutils not found, installing... "
 
   else
     info "Found coreutils, skipping. "
@@ -43,8 +45,11 @@ esac
 
 info "Beginning Homebrew installs... "
 info "Tapping homebrew/bundle... "
-brew tap homebrew/bundle 2>/dev/null &
-success "done!"
+brew tap homebrew/bundle > /dev/null 2>&1 &
+wait_last
+success  "Tapping homebrew/bundle... "
 
-info "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... "
-brew bundle --file=$HOME/scripts/$PLATFORM/Brewfile 
+task "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... (This may take awhile) "
+brew bundle --file=$HOME/scripts/$PLATFORM/Brewfile > /dev/null 2>&1 &
+wait_last
+success "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... (This may take awhile) "
