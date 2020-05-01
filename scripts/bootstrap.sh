@@ -166,6 +166,17 @@ else
 
     MacOS)
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+      
+      info "Creating brew group and chmod'ing to make homebrew multi-user..."
+      sudo dscl . create /Groups/brew Homebrew "Users that can access Homebrew"
+      sudo dscl . create /Groups/brew gid 405
+      sudo dscl . create /Groups/brew GroupMembership $(whoami)
+      sudo chgrp -R brew $(brew --prefix)/*
+      sudo chmod -R g+w brew $(brew --prefix)/*
+      sudo mkdir /usr/local/Frameworks
+      sudo chgrp -R brew /usr/local/Frameworks
+      sudo chmod -R g+w /usr/local/Frameworks
+      success "done!"
     ;;
 
     *)

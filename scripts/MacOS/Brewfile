@@ -6,6 +6,7 @@ tap 'homebrew/cask'
 tap 'homebrew/cask-fonts'
 tap 'homebrew/core'
 tap 'pivotal/tap'
+tap 'cloudfoundry/tap'
 
 # ===============================================================
 #                           Binaries
@@ -14,13 +15,15 @@ tap 'pivotal/tap'
 brew 'coreutils'
 brew 'nvim'
 brew 'wget'
-brew 'pivotal/tap/git-together'
+brew 'git-together'
 brew 'node'
 brew 'yarn'
 brew 'yarn-completion'
 brew 'mysql'
 brew 'zsh-completion'
 brew 'diff-so-fancy'
+brew 'cf-cli'
+
 
 # ===============================================================
 #                           MacOS Apps
