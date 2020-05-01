@@ -3,60 +3,60 @@
 # ===============================================================
 #                       Install ZSH
 # ===============================================================
-info "Checking for ZSH... "
+task "Checking for ZSH... "
 if [ $(command -v zsh) ]; then
-  info "Found ZSH, skipping. "
+  skip "Checking for ZSH... Found ZSH, skipping. "
 
 else
-  task "ZSH not found, installing... "
+  task "Checking for ZSH... ZSH not found, installing... "
   install_pkg zsh 
-  success  "ZSH not found, installing... "
+  success  "Checking for ZSH... ZSH not found, installing... done!"
 fi
 
 # ===============================================================
 #                    Install Oh-My-Zsh
 # ===============================================================
-info "Checking for Oh-My-ZSH... "
+task "Checking for Oh-My-ZSH... "
 if [[ -d $HOME/.oh-my-zsh ]]; then
-  info "Found Oh-My-ZSH, skipping. "
+  skip "Checking for Oh-My-ZSH... Found Oh-My-ZSH, skipping. "
 
 else
-  task "$HOME/.oh-my-zsh Not found, installing... "
+  task "Checking for Oh-My-ZSH... $HOME/.oh-my-zsh Not found, installing... "
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended > /dev/null 2>&1 &
   wait_last
-  success "$HOME/.oh-my-zsh Not found, installing... "
+  success "Checking for Oh-My-ZSH... $HOME/.oh-my-zsh Not found, installing... done!"
 
   task "Overwriting default Oh-My-ZSH template .zshrc with ours... "
   mv $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
-  success  "Overwriting default Oh-My-ZSH template .zshrc with ours... "
+  success  "Overwriting default Oh-My-ZSH template .zshrc with ours... done!"
 fi
 
 # ===============================================================
 #                 Install PowerLevel10K
 # ===============================================================
-info "Checking for Powerlevel10K... "
-if [ -d $ZSH_CUSTOM/themes/powerlevel10k ]; then
-  info "Found Powerlevel10K, skipping. "
+task "Checking for Powerlevel10K... "
+if [[ -d $HOME/.oh-my-zsh/custom/themes/powerlevel10k ]]; then
+  skip "Checking for Powerlevel10K... Found Powerlevel10K, skipping. "
 
 else
-  task "Powerlevel10K not found, installing... "
+  task "Checking for Powerlevel10K... Powerlevel10K not found, installing... "
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $HOME/.oh-my-zsh/custom/themes/powerlevel10k > /dev/null 2>&1 &
   wait_last
-  success  "Powerlevel10K not found, installing... "
+  success "Checking for Powerlevel10K... Powerlevel10K not found, installing... done!"
 fi
 
 # ===============================================================
 #                 Install ZSH-AutoSuggestions
 # ===============================================================
-info "Checking for ZSH-Autosuggestions... "
-if [ -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
-  info "Found ZSH-Autosuggestions, skipping. "
+task "Checking for ZSH-Autosuggestions... "
+if [[ -d $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]]; then
+  skip "Checking for ZSH-Autosuggestions... Found ZSH-Autosuggestions, skipping. "
 
 else
-  task "ZSH-Autosuggestions not found, installing... "
+  task "Checking for ZSH-Autosuggestions... ZSH-Autosuggestions not found, installing... "
   git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions > /dev/null 2>&1 &
   wait_last
-  success "ZSH-Autosuggestions not found, installing... "
+  success "Checking for ZSH-Autosuggestions... ZSH-Autosuggestions not found, installing... done!"
 fi
 
 # ===============================================================
