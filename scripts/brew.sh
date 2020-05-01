@@ -1,6 +1,50 @@
 #!/usr/bin/env bash
 
 # ===============================================================
+#         Install Homebrew/Linuxbrew if not already present
+# ===============================================================
+
+task "Checking for Homebrew... "
+
+if [ $(command -v brew) ]; then
+  skip "Checking for Homebrew... Homebrew found, skipping."
+else
+  task "Checking for Homebrew... Homebrew not found, installing... "
+  case $PLATFORM in
+    Linux)
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
+      eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+      success "Checking for Homebrew... Homebrew not found, installing... done!"
+    ;;
+
+    MacOS)
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+      success "Checking for Homebrew... Homebrew not found, installing... done!"
+
+      task "Creating brew group to make homebrew multi-user..."
+      sudo dscl . create /Groups/brew Homebrew "Users that can access Homebrew"
+      sudo dscl . create /Groups/brew gid 405
+      sudo dscl . create /Groups/brew GroupMembership $(whoami)
+
+      task "Creating brew group to make homebrew multi-user... changing brew ownership/permissions... "
+      sudo chgrp -R brew $(brew --prefix)/*
+      sudo chmod -R g+w brew $(brew --prefix)/*
+      sudo mkdir /usr/local/Frameworks
+      sudo chgrp -R brew /usr/local/Frameworks
+      sudo chmod -R g+w /usr/local/Frameworks
+
+      success "Creating brew group to make homebrew multi-user... changing brew ownership/permissions... done!"
+      info "To allow users to run brew commands, use 'sudo dscl . append /Groups/brew GroupMembership <username>'"
+    ;;
+
+    *)
+      fail "Unable to install Homebrew for $PLATFORM, exiting... "
+    ;;
+  esac
+fi
+
+# ===============================================================
 #              Ensure Homebrew is newest version
 # ===============================================================
 

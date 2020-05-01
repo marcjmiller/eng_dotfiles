@@ -72,14 +72,14 @@ install_pkg() {
 #                     Grab sudo and keep it
 # ===============================================================
 
-task "Requesting root privileges"
+info "Requesting root privileges..."
 sudo -v
 while true; do 
   sudo -n true;
   sleep 60;
   kill -0 "$$" || exit;
 done 2>/dev/null &
-success "Requesting root privileges"
+
 
 # ===============================================================
 #                         Determine OS
@@ -161,46 +161,6 @@ fi
 task "Setting local status.showUntrackedFiles no for dotfiles repo... "
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
 success "Setting local status.showUntrackedFiles no for dotfiles repo... done!"
-
-# ===============================================================
-#         Install Homebrew/Linuxbrew if not already present
-# ===============================================================
-
-task "Checking for Homebrew... "
-
-if [ $(command -v brew) ]; then
-  skip "Checking for Homebrew... Homebrew found, skipping."
-else
-  task "Checking for Homebrew... Homebrew not found, installing... "
-  case $PLATFORM in
-    Linux)
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-      echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> $HOME/.bash_profile
-      eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-      success "Checking for Homebrew... Homebrew not found, installing... done!"
-    ;;
-
-    MacOS)
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-      success "Checking for Homebrew... Homebrew not found, installing... done!"
-
-      task "Creating brew group and chmod'ing to make homebrew multi-user..."
-      sudo dscl . create /Groups/brew Homebrew "Users that can access Homebrew"
-      sudo dscl . create /Groups/brew gid 405
-      sudo dscl . create /Groups/brew GroupMembership $(whoami)
-      sudo chgrp -R brew $(brew --prefix)/*
-      sudo chmod -R g+w brew $(brew --prefix)/*
-      sudo mkdir /usr/local/Frameworks
-      sudo chgrp -R brew /usr/local/Frameworks
-      sudo chmod -R g+w /usr/local/Frameworks
-      success "Creating brew group and chmod'ing to make homebrew multi-user... done!"
-    ;;
-
-    *)
-      fail "Unable to install Homebrew for $PLATFORM, exiting... "
-    ;;
-  esac
-fi
 
 # ===============================================================
 #             Install Homebrew and run our Brewfile

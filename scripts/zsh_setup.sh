@@ -65,4 +65,3 @@ fi
 
 info "New config with Oh-My-ZSH and Powerlevel10K setup, will load on next start of terminal"
 # source ~/.zshrc
-# success "done!"

@@ -13,6 +13,7 @@ tap 'cloudfoundry/tap'
 # ===============================================================
 
 brew 'coreutils'
+brew 'dockutil'
 brew 'nvim'
 brew 'wget'
 brew 'git-together'

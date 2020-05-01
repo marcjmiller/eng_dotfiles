@@ -61,3 +61,23 @@ task "Set Finder to show Path and Status bars..."
 defaults write com.apple.Finder ShowStatusBar -bool true
 defaults write com.apple.Finder ShowPathBar -bool true
 success "Set Finder to show Path and Status bars... done!"
+
+task "Set Dock show recent items to false..."
+defaults write com.apple.dock show-recents -bool FALSE
+success "Set Dock show recent items to false... done!"
+
+task "Clean up MacOS dock items..."
+dockutil --no-restart --remove all
+
+task "Clean up MacOS dock items... cleaned! Adding items... "
+dockutil --no-restart --add "/Applications/Chromium.app"
+dockutil --no-restart --add "/Applications/Firefox.app"
+dockutil --no-restart --add "/Applications/iTerm.app"
+dockutil --no-restart --add "/Applications/VSCodium.app"
+dockutil --no-restart --add "/Applications/IntelliJ IDEA.app"
+dockutil --no-restart --add "/Applications/kitty.app"
+dockutil --no-restart --add "/Applications/Slack.app"
+task "Clean up MacOS dock items... cleaned! Adding items... restarting dock..."
+
+killall Dock
+success "Clean up MacOS dock items... cleaned! Adding items... restarting dock... done!"
