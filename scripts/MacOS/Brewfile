@@ -2,9 +2,9 @@
 #                             Taps
 # ===============================================================
 
-tap 'homebrew/cask'
 tap 'homebrew/cask-fonts'
 tap 'homebrew/core'
+tap 'homebrew/services'
 tap 'pivotal/tap'
 tap 'cloudfoundry/tap'
 

@@ -8,9 +8,8 @@ task "Checking for Homebrew... "
 
 if [ $(command -v brew) ]; then
   skip "Checking for Homebrew... Homebrew found, skipping."
-  if grep -q $group /etc/brew
 else
-  task "Checking for Homebrew... Homebrew not found, installing... "
+  task "Checking for Homebrew... Homebrew not found, installing... (This may take awhile)"
   case $PLATFORM in
     Linux)
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
@@ -22,21 +21,6 @@ else
     MacOS)
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       success "Checking for Homebrew... Homebrew not found, installing... done!"
-
-      task "Creating brew group to make homebrew multi-user..."
-      sudo dscl . create /Groups/brew Homebrew "Users that can access Homebrew"
-      sudo dscl . create /Groups/brew gid 405
-      sudo dscl . create /Groups/brew GroupMembership $(whoami)
-
-      task "Creating brew group to make homebrew multi-user... changing brew ownership/permissions... "
-      sudo chgrp -R brew $(brew --prefix)/*
-      sudo chmod -R g+w brew $(brew --prefix)/*
-      sudo mkdir /usr/local/Frameworks
-      sudo chgrp -R brew /usr/local/Frameworks
-      sudo chmod -R g+w /usr/local/Frameworks
-
-      success "Creating brew group to make homebrew multi-user... changing brew ownership/permissions... done!"
-      info "To allow users to run brew commands, use 'sudo dscl . append /Groups/brew GroupMembership <username>'"
     ;;
 
     *)
@@ -46,10 +30,64 @@ else
 fi
 
 # ===============================================================
+#            Ensure Homebrew is multi-user friendly
+# ===============================================================
+task "Checking Homebrew multi-user friendliness..."
+
+case $PLATFORM in 
+  Linux)
+    skip "Checking Homebrew multi-user friendliness... Linuxbrew is friendly by default, skipping."
+  ;;
+
+  MacOS)
+    task "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them..."
+    if [dscl . read /Groups/brew | grep -q brew]; then
+      success "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... found group brew, done!"
+
+      task "Ensuring current user is part of Homebrew group..."
+      sudo dscl . append /Groups/brew GroupMembership $(whoami)
+      success "Ensuring current user is part of Homebrew group... done!"
+
+      if [ -d /usr/local/var/run/watchman ]; then
+        task "Setting Watchman directory permissions..."
+        sudo chmod 2777 /usr/local/var/run/watchman
+        success "Setting Watchman directory permissions... done!"
+      fi
+
+      
+    else
+      task "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... Not found, creating... "
+      sudo dscl . create /Groups/brew Homebrew "Users that can access Homebrew"
+      sudo dscl . create /Groups/brew gid 405
+      sudo dscl . create /Groups/brew GroupMembership $(whoami)
+      success "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... Not found, creating... done!"
+
+      task "Setting new group as owner of Homebrew files..."
+      sudo mkdir /usr/local/Frameworks
+      sudo chgrp -R brew $(brew --prefix)/*
+      success "Setting new group as owner of Homebrew files... done!"
+
+      task "Setting permissions for group on Homebrew files..."
+      sudo chmod -R g+w $(brew --prefix)/*
+      sudo chmod -R 775 /usr/local/Cellar/
+
+      success "Setting permissions for group on Homebrew files... done!"
+  
+      info "To allow users to run brew commands, use 'sudo dscl . append /Groups/brew GroupMembership <username>' or just run the bootstrap.sh script again"
+    fi
+  ;;
+
+  *)
+    skip "Checking Homebrew multi-user friendliness... nothing to do, skipping."
+    fail "Unable to install Homebrew for $PLATFORM, exiting... "
+  ;;
+esac
+
+# ===============================================================
 #              Ensure Homebrew is newest version
 # ===============================================================
 
-task "Updating Homebrew... "
+task "Updating Homebrew... (This may take awhile)"
 brew update > /dev/null 2>&1 &
 wait_last
 success "Updating Homebrew... done!"
@@ -93,7 +131,7 @@ brew tap homebrew/bundle > /dev/null 2>&1 &
 wait_last
 success  "Tapping homebrew/bundle... done!"
 
-task "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... (This may take awhile) "
+task "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile... (This may take awhile) "
 brew bundle --file=$HOME/scripts/$PLATFORM/Brewfile > /dev/null 2>&1 &
 wait_last
-success "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile ... (This may take awhile)... done!"
+success "Beginning Homebrew Bundle using ~/scripts/$PLATFORM/Brewfile... done!"
