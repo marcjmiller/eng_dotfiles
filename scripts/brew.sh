@@ -41,7 +41,7 @@ case $PLATFORM in
 
   MacOS)
     task "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them..."
-    if [dscl . read /Groups/brew | grep -q brew]; then
+    if [ sudo dscl . read /Groups/brew | grep -q brew ]; then
       success "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... found group brew, done!"
 
       task "Ensuring current user is part of Homebrew group..."
@@ -63,7 +63,12 @@ case $PLATFORM in
       success "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... Not found, creating... done!"
 
       task "Setting new group as owner of Homebrew files..."
-      sudo mkdir /usr/local/Frameworks
+      if [ -d /usr/local/Frameworks ]; then
+        skip "Setting new group as owner of Homebrew files... found, skipping."
+      else
+        sudo mkdir /usr/local/Frameworks
+      fi
+
       sudo chgrp -R brew $(brew --prefix)/*
       success "Setting new group as owner of Homebrew files... done!"
 

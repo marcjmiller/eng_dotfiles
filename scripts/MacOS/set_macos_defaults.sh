@@ -70,7 +70,7 @@ task "Clean up MacOS dock items..."
 dockutil --no-restart --remove all
 
 task "Clean up MacOS dock items... cleaned! Adding items... "
-dockutil --no-restart --add "/Applications/Chromium.app"
+dockutil --no-restart --add "/Applications/Google Chrome.app"
 dockutil --no-restart --add "/Applications/Firefox.app"
 dockutil --no-restart --add "/Applications/iTerm.app"
 dockutil --no-restart --add "/Applications/VSCodium.app"
