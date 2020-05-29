@@ -13,6 +13,19 @@ else
   success  "Checking for ZSH... ZSH not found, installing... done!"
 fi
 
+task "Checking for ZSH as default shell..."
+case $SHELL in
+  *zsh)
+    skip "Checking for ZSH as default shell... found ZSH, skipping."
+  ;;
+
+  *)
+    task "Checking for ZSH as default shell... not ZSH, setting..."
+    chsh -s $(which zsh) > /dev/null 2>&1
+    success "Checking for ZSH as default shell... not ZSH, setting... done!"
+  ;;
+esac
+
 # ===============================================================
 #                    Install Oh-My-Zsh
 # ===============================================================
