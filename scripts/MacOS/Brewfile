@@ -32,6 +32,7 @@ brew 'maven'
 # ===============================================================
 
 cask 'chromium'
+cask 'google-chrome'
 cask 'firefox'
 cask 'iterm2'
 cask 'vscodium'

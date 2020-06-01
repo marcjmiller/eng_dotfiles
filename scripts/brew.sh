@@ -40,7 +40,7 @@ case $PLATFORM in
   ;;
 
   MacOS)
-    task "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them..."
+    task "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... "
     if [ dscl . read /Groups/brew | grep -q brew ]; then
       success "Checking Homebrew multi-user friendliness... MacOS needs some tweaks, checking for them... found group brew, done!"
 
