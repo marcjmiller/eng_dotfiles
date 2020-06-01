@@ -24,6 +24,7 @@ brew 'mysql'
 brew 'zsh-completion'
 brew 'diff-so-fancy'
 brew 'cf-cli'
+brew 'maven'
 
 
 # ===============================================================
