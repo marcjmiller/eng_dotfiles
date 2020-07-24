@@ -124,7 +124,11 @@ esac
 
 task "Checking for dotfiles repo..."
 if [ -d $HOME/.dotfiles/ ]; then
-  skip "Checking for dotfiles repo... repo found, skipping. "
+  task "Checking for dotfiles repo... repo found, running git pull to fetch updates... "
+  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME pull > /dev/null 2>&1 &
+  wait_last
+  success "Checking for dotfiles repo... repo found, running git pull to fetch updates... done!"
+
 else
   task "Installing helpers for $PLATFORM..."
   
@@ -143,19 +147,20 @@ else
     success "Installing helpers for $PLATFORM... Installing git curl rsync file wget zsh... done!"
   fi
   
-  task "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... "
-  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git tmpdotfiles > /dev/null 2>&1 &
+  task "Checking for dotfiles repo... not found, cloning repo to `/tmp/dotfiles`... "
+  mkdir /tmp/dotfiles
+  git clone --separate-git-dir=$HOME/.dotfiles https://github.com/marcjmiller/eng_dotfiles.git /tmp/dotfiles > /dev/null 2>&1 &
   wait_last
-  success "Dotfiles not found, cloning repo to `tmpdotfiles` in $HOME... done!"
+  success "Checking for dotfiles repo... not found, cloning repo to `tmpdotfiles` in $HOME... done!"
 
-  task "Copying from tmpdotfiles to $HOME... "
-  rsync --recursive --verbose --exclude '.git' tmpdotfiles/ $HOME > /dev/null 2>&1 &
+  task "Copying from /tmp/dotfiles to $HOME... "
+  rsync --recursive --verbose --exclude '.git' /tmp/dotfiles/ $HOME > /dev/null 2>&1 &
   wait_last
-  success "Copying from tmpdotfiles to $HOME... done!"
+  success "Copying from /tmp/dotfiles to $HOME... done!"
 
-  task "Cleaning up tmpdotfiles... "
-  rm -r tmpdotfiles
-  success "Cleaning up tmpdotfiles... done!"
+  task "Cleaning up /tmp/dotfiles... "
+  rm -r /tmp/dotfiles
+  success "Cleaning up /tmp/dotfiles... done!"
 fi
 
 task "Setting local status.showUntrackedFiles no for dotfiles repo... "
@@ -186,9 +191,9 @@ fi
 #              Link configs for apps that need it
 # ===============================================================
 
-task "Copying configs for the apps that need it..."
-source $HOME/scripts/link_configs.sh
-success "Copying configs for the apps that need it... done!"
+#task "Copying configs for the apps that need it..."
+#source $HOME/scripts/link_configs.sh
+#success "Copying configs for the apps that need it... done!"
 
 # ===============================================================
 #                  Setup SSH key for version control

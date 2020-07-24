@@ -32,6 +32,7 @@ brew 'direnv'
 # ===============================================================
 
 cask 'chromium'
+cask 'google-chrome'
 cask 'firefox'
 cask 'iterm2'
 cask 'vscodium'
@@ -45,7 +46,6 @@ cask 'kitty'
 #                           MacOS Fonts
 # ===============================================================
 
-cask 'font-hasklig-nerd-font'
-cask 'font-hasklig-nerd-font-mono'
+cask 'font-hasklug-nerd-font'
 cask 'font-fira-code'
 cask 'font-victor-mono'
