@@ -2,7 +2,7 @@
 export LANG=en_US.UTF-8
 
 # export PATH just in case, adding `/$HOME/bin` and `/usr/local/bin`...
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/opt/maven@3.5/bin:$PATH
 
 # export ZSH directory as env
 export ZSH="$HOME/.oh-my-zsh"
@@ -13,3 +13,6 @@ export UPDATE_ZSH_DAYS=1
 # Preferred editor for local, remote, and visual sessions
 export EDITOR='nvim'
 export VISUAL='nvim'
+
+# Export JAVA_HOME to correct version of Java
+export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home'
