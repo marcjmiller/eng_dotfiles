@@ -15,6 +15,7 @@ tap 'cloudfoundry/tap'
 brew 'coreutils'
 brew 'dockutil'
 brew 'nvim'
+brew 'maven@3.5'
 brew 'wget'
 brew 'git-together'
 brew 'node'
@@ -31,6 +32,8 @@ brew 'direnv'
 #                           MacOS Apps
 # ===============================================================
 
+cask 'adoptopenjdk8'
+cask 'java8'
 cask 'chromium'
 cask 'google-chrome'
 cask 'firefox'
